@@ -1,4 +1,4 @@
-#!/ bin/ bash
+#!/bin/bash
 
 github_user_name="$(git config --list | awk -F\user.name= '$0=$2')"
 
