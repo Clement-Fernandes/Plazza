@@ -1,20 +1,44 @@
 /*
 ** EPITECH PROJECT, 2022
-** B-EPI-000-PAR-0-0-projectname-user.email
+** B-CCP-400-PAR-4-1-theplazza-clement.fernandes
 ** File description:
 ** main
 */
 
-#include "Errors/Errors.hpp"
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <array>
+#include <map>
+#include "plazza.hpp"
 
-int main(int ac, char **av)
+static bool catch_helper(std::vector<std::string> const &av)
 {
-    try {
-        if (ac != 2)
-            throw Errors(std::cerr, "Invalid number of arguments");
-    } catch (const std::exception &e) {
-        std::cerr << "Error(s): " << e.what() << std::endl;
-        return (84);
+    bool helper = false;
+    std::map<std::string, std::string> helper_list {
+    {"-h", "conf/helper.conf"},
+    {"--helper", "conf/helper.conf"},
+    {"--size", "conf/size.conf"},
+    {"--type", "conf/pizza.conf"}};
+
+    for (auto i = helper_list.begin(); i != helper_list.end(); i++) {
+        if (std::find(av.begin(), av.end(), i->first) != av.end()) {
+            if (helper)
+                std::cout << std::endl;
+            display_file(i->second, std::cout);
+            helper = true;
+        }
     }
-    return (0);
+    return helper;
+}
+
+int main(int ac, char const * const *av)
+{
+    if (ac < 2) {
+        display_file("conf/helper.conf", std::cerr);
+        return 84;
+    }
+    if (catch_helper(std::vector<std::string> (av, av + ac)))
+        return 0;
+    return 0;
 }

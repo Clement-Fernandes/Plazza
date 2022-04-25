@@ -1,48 +1,49 @@
 ##
 ## EPITECH PROJECT, 2022
-## B-EPI-000-PAR-0-0-projectname-user.email
+## B-CCP-400-PAR-4-1-theplazza-clement.fernandes
 ## File description:
 ## Makefile
 ##
 
-CXX	=	g++
+MAIN_SOURCE		=	Source/main.cpp			\
 
-COPY	=	cp -f
-COPY_FILE	=	$(COPY)
-COPY_DIR	=	$(COPY) -r
+SOURCE			=	Source/display_file.cpp	\
+					Source/read_file.cpp	\
 
-DELETE	=	rm -f
-DELETE_FILE	=	$(DELETE)
-DELETE_DIR	=	$(DELETE) -r
+MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
 
-MAIN_SOURCE	=	Source/main.cpp			\
+OBJ				=	$(SOURCE:.cpp=.o)
 
-SOURCE	=	Source/Errors/Errors.cpp	\
+NAME			=	plazza
 
-MAIN_OBJ	=	$(MAIN_SOURCE:.cpp=.o)
+CXX				?=	g++
 
-OBJ	=	$(SOURCE:.cpp=.o)
+COPY			?=	cp -f
+COPY_FILE		?=	$(COPY)
+COPY_DIR		?=	$(COPY) -r
 
-INCLUDE_DIRS	=	-I Source/Errors/
+DELETE			?=	rm -f
+DELETE_FILE		?=	$(DELETE)
+DELETE_DIR		?=	$(DELETE) -r
 
-CXXFLAGS	+=	-W -Wall -Wextra
-CXXFLAGS	+=	$(INCLUDE_DIRS)
-CXXFLAGS	+=	-std=c++2a
+INCLUDE_DIRS	+=	-I Source/Error/ -I include/
 
-NAME	=	project
+CXXFLAGS		+=	-W -Wall -Wextra
+CXXFLAGS		+=	$(INCLUDE_DIRS)
+CXXFLAGS		+=	-std=c++2a
 
-all: $(NAME)
+all:	$(NAME)
 
-$(NAME): $(MAIN_OBJ) $(OBJ)
-	@$(CXX) -o $(NAME) $(MAIN_OBJ) $(OBJ) $(CXXFLAGS)
+$(NAME):	$(MAIN_OBJ) $(OBJ)
+	$(CXX) -o $(NAME) $(MAIN_OBJ) $(OBJ)
 
 clean:
-	@$(DELETE_FILE) $(MAIN_OBJ)
-	@$(DELETE_FILE) $(OBJ)
+	$(DELETE_FILE) $(MAIN_OBJ)
+	$(DELETE_FILE) $(OBJ)
 
 fclean:	clean
-	@$(DELETE_FILE) $(NAME)
+	$(DELETE_FILE) $(NAME)
 
 re:	fclean all
 
-.PHONY: all $(NAME) clean fclean re
+.PHONY: all clean fclean re
