@@ -1,3 +1,5 @@
-[![CI Epitech Project - Octopus](https://github.com/MyEpitech/B-EPI-O00-PAR-0-0-projectname-user.email/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/MyEpitech/B-EPI-O00-PAR-0-0-projectname-user.email/actions/workflows/main.yml)
+[![CI Epitech Project - Octopus](https://github.com/MyEpitech/B-CCP-400-PAR-4-1-theplazza-clement.fernandes
+/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/MyEpitech/B-CCP-400-PAR-4-1-theplazza-clement.fernandes
+/actions/workflows/main.yml)
 
-# B-EPI-O00-PAR-0-0-projectname-user.email
+# B-CCP-400-PAR-4-1-theplazza-clement.fernandes
