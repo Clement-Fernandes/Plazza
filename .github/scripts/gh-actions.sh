@@ -1,7 +1,8 @@
-github_user_name="$(git config --list | awk -F\user.name= '$0=$2')"
-github_user_email="$(git config --list | awk -F\user.email= '$0=$2')"
+#!/ bin/ bash
 
-declare -A user_array=(["Martin VANAUD"]=".env/.martin.env" ["Victor PALLE"]=".env/.victor.env")
+github_user_name="$(git config --list | awk -F\user.name= '$0=$2')"
+
+declare -A user_array=(["Clement Fernander"]=".github/environement/.clement.env" ["Gurvan Le Letty"]=".github/environement/.gurvan.env" ["Maxime Carabina"]=".github/environement/.maxime.env")
 
 if [[ ${user_array[$github_user_name]} ]]; then
     printf "\033[0;32m✓\033[0m User found ...\n"
