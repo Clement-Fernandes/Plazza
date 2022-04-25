@@ -1,4 +1,4 @@
-#!/ bin/ bash
+#!/bin/bash
 
 # Specify folder where you can find sources , on your local machine
 SOURCE_FOLDER=/home/casimir/cpp_pool/docker-actions/
