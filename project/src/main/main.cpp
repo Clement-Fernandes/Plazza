@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <algorithm>
-#include <vector>
 #include <array>
 #include <map>
 #include "plazza.hpp"
@@ -40,5 +39,5 @@ int main(int ac, char const * const *av)
     }
     if (catch_helper(std::vector<std::string> (av, av + ac)))
         return 0;
-    return 0;
+    return plazza(std::vector<std::string> (av, av + ac));
 }

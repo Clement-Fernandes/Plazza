@@ -5,10 +5,11 @@
 ## Makefile
 ##
 
-MAIN_SOURCE		=	Source/main.cpp			\
+MAIN_SOURCE		=	src/main/main.cpp				\
 
-SOURCE			=	Source/display_file.cpp	\
-					Source/read_file.cpp	\
+SOURCE			=	src/library/display_file.cpp	\
+					src/library/read_file.cpp		\
+					src/main/plazza.cpp				\
 
 MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
 
@@ -26,7 +27,7 @@ DELETE			?=	rm -f
 DELETE_FILE		?=	$(DELETE)
 DELETE_DIR		?=	$(DELETE) -r
 
-INCLUDE_DIRS	+=	-I Source/Error/ -I include/
+INCLUDE_DIRS	+=	-I src/Error/ -I include/
 
 CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)
