@@ -19,6 +19,6 @@ Description
 ```
 
 ## Made by
-<a href="https://github.com/Clement-Fernandes" target="_blank"><img src="../.assets/clement-profile.png" width="40"></a>
-<a href="https://github.com/psYshiX-07" target="_blank"><img src="../.assets/maxime-profile.png" width="40"></a>
-<a href="https://github.com/Darkuore" target="_blank"><img src="../.assets/gurvan-profile.png" width="40"></a>
+<a href="https://github.com/Clement-Fernandes" target="_blank"><img src=".assets/clement-profile.png" width="40"></a>
+<a href="https://github.com/psYshiX-07" target="_blank"><img src=".assets/maxime-profile.png" width="40"></a>
+<a href="https://github.com/Darkuore" target="_blank"><img src=".assets/gurvan-profile.png" width="40"></a>
