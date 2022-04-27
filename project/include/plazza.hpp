@@ -11,9 +11,13 @@
     #include <string>
     #include <vector>
 
+    std::vector<std::string> strToWordArr(std::string const &_line, char delim);
+
     std::string readFile(std::string const &filename, std::string const &sep);
-    void display_file(std::string const &filename, std::ostream &stream = std::cout);
+    void displayFile(std::string const &filename, std::ostream &stream);
 
     int plazza(std::vector<std::string> const &av);
+
+    void terminalReader();
 
 #endif /* !PLAZZA_HPP_ */

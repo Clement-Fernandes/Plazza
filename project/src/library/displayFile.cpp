@@ -8,7 +8,7 @@
 #include <iostream>
 #include "plazza.hpp"
 
-void display_file(std::string const &filename, std::ostream &stream)
+void displayFile(std::string const &filename, std::ostream &stream)
 {
     stream << readFile(filename, "\n") << std::endl;
 }

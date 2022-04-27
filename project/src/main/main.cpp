@@ -11,7 +11,7 @@
 #include <map>
 #include "plazza.hpp"
 
-static bool catch_helper(std::vector<std::string> const &av)
+static bool catchHelper(std::vector<std::string> const &av)
 {
     bool helper = false;
     std::map<std::string, std::string> helper_list {
@@ -24,7 +24,7 @@ static bool catch_helper(std::vector<std::string> const &av)
         if (std::find(av.begin(), av.end(), i->first) != av.end()) {
             if (helper)
                 std::cout << std::endl;
-            display_file(i->second, std::cout);
+            displayFile(i->second, std::cout);
             helper = true;
         }
     }
@@ -34,10 +34,10 @@ static bool catch_helper(std::vector<std::string> const &av)
 int main(int ac, char const * const *av)
 {
     if (ac < 2) {
-        display_file("conf/helper.conf", std::cerr);
+        displayFile("conf/helper.conf", std::cerr);
         return 84;
     }
-    if (catch_helper(std::vector<std::string> (av, av + ac)))
+    if (catchHelper(std::vector<std::string> (av, av + ac)))
         return 0;
     return plazza(std::vector<std::string> (av, av + ac));
 }

@@ -7,9 +7,11 @@
 
 MAIN_SOURCE		=	src/main/main.cpp				\
 
-SOURCE			=	src/library/display_file.cpp	\
-					src/library/read_file.cpp		\
+SOURCE			=	src/library/strToWordArr.cpp	\
+					src/library/displayFile.cpp		\
+					src/library/readFile.cpp		\
 					src/main/plazza.cpp				\
+					src/main/terminalReader.cpp		\
 
 MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
 

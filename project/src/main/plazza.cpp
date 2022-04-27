@@ -7,8 +7,10 @@
 
 #include <vector>
 #include <string>
+#include "plazza.hpp"
 
 int plazza(std::vector<std::string> const &av)
 {
+    terminalReader();
     return 0;
 }
