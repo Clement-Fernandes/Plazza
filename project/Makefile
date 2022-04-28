@@ -30,7 +30,7 @@ DELETE			?=	rm -f
 DELETE_FILE		?=	$(DELETE)
 DELETE_DIR		?=	$(DELETE) -r
 
-INCLUDE_DIRS	+=	-I src/Error/ -I include/
+INCLUDE_DIRS	+=	-I src/Error/ -I include/ -I src/modules/
 
 CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)
