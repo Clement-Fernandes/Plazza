@@ -28,5 +28,5 @@ std::string readFile(std::string const &filename, std::string const &sep)
             first = false;
         fileContent.append(tmp);
     }
-    return fileContent;
+    return (fileContent);
 }
