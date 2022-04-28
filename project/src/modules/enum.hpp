@@ -25,4 +25,17 @@
         XXL = 16
     };
 
+    enum class Ingredients
+    {
+        DOE = 0,
+        TOMATOE,
+        GRUYERE,
+        HAM,
+        MUSHROOMS,
+        STEAK,
+        EGGPLANT,
+        GOATCHEESE,
+        CHEFLOVE
+    };
+
 #endif /* !ENUM_HPP_ */
