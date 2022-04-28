@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2022
-** plazza
+** B-CCP-400-PAR-4-1-theplazza-clement.fernandes
 ** File description:
 ** plazza
 */
@@ -11,13 +11,14 @@
     #include <string>
     #include <vector>
 
-    std::vector<std::string> strToWordArr(std::string const &_line, char delim);
+int plazza(std::vector<std::string> const &av);
 
-    std::string readFile(std::string const &filename, std::string const &sep);
-    void displayFile(std::string const &filename, std::ostream &stream);
+std::vector<std::string> strToWordArr(std::string const &_line, char delim);
 
-    int plazza(std::vector<std::string> const &av);
+std::string readFile(std::string const &filename, std::string const &sep);
+void displayFile(std::string const &filename, std::ostream &stream);
 
-    void terminalReader();
+void terminalReader();
+
 
 #endif /* !PLAZZA_HPP_ */

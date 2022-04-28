@@ -9,8 +9,10 @@
 #include <string>
 #include "plazza.hpp"
 
+
 int plazza(std::vector<std::string> const &av)
 {
+    printf("Welcome to the Plazza!\n");
     terminalReader();
     return 0;
 }
