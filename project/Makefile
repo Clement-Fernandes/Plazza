@@ -12,6 +12,7 @@ SOURCE			=	src/library/strToWordArr.cpp	\
 					src/library/readFile.cpp		\
 					src/main/plazza.cpp				\
 					src/main/terminalReader.cpp		\
+					src/Kitchen.cpp					\
 
 MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
 
