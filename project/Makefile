@@ -11,7 +11,7 @@ SOURCE			=	src/library/strToWordArr.cpp	\
 					src/library/displayFile.cpp		\
 					src/library/readFile.cpp		\
 					src/main/plazza.cpp				\
-					src/main/terminalReader.cpp		\
+					src/Reception/Reception.cpp		\
 					src/Kitchen.cpp					\
 
 MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
@@ -30,7 +30,7 @@ DELETE			?=	rm -f
 DELETE_FILE		?=	$(DELETE)
 DELETE_DIR		?=	$(DELETE) -r
 
-INCLUDE_DIRS	+=	-I src/Error/ -I include/ -I src/modules/
+INCLUDE_DIRS	+=	-I src/Error/ -I include/ -I src/modules/ -I src/Reception/
 
 CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)

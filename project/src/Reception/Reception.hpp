@@ -13,6 +13,8 @@ class Reception {
         Reception();
         ~Reception();
 
+        void terminalReader() const;
+
     protected:
     private:
 };

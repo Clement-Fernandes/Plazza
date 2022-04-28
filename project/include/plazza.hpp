@@ -18,7 +18,4 @@ std::vector<std::string> strToWordArr(std::string const &_line, char delim);
 std::string readFile(std::string const &filename, std::string const &sep);
 void displayFile(std::string const &filename, std::ostream &stream);
 
-void terminalReader();
-
-
 #endif /* !PLAZZA_HPP_ */
