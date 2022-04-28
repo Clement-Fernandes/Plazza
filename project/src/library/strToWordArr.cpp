@@ -15,7 +15,7 @@ std::vector<std::string> strToWordArr(std::string const &_line, char delim)
     std::stringstream str(_line);
     std::string tmp;
 
-    while (getline(str, tmp, delim))
+    while (std::getline(str, tmp, delim))
         if (tmp.size())
             arr.push_back(tmp);
     return arr;

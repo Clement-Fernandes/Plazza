@@ -5,8 +5,8 @@
 ** Reception
 */
 
-#include <iostream>
 #include <regex>
+#include "Error.hpp"
 #include "plazza.hpp"
 #include "Reception.hpp"
 
@@ -18,7 +18,38 @@ Reception::~Reception()
 {
 }
 
-void Reception::terminalReader() const
+void Reception::displayStatus(void) const
+{
+    std::cout << "status" << std::endl;
+}
+
+bool Reception::handleRequest(std::string const &data) const
+{
+    bool request = false;
+    std::map<std::string, std::string> helper_list {
+        {"-h", "conf/runtimeHelper.conf"},
+        {"--helper", "conf/runtimeHelper.conf"},
+        {"--size", "conf/size.conf"},
+        {"--type", "conf/pizza.conf"}
+    };
+    std::vector<std::string> datas = strToWordArr(data, ' ');
+
+    for (auto &i : helper_list) {
+        if (std::find(datas.begin(), datas.end(), i.first) != datas.end()) {
+            if (request)
+                std::cout << std::endl;
+            displayFile(i.second, std::cout);
+            request = true;
+        }
+    }
+    if (data == "status") {
+        request = true;
+        displayStatus();
+    }
+    return request;
+}
+
+void Reception::terminalReader()
 {
     std::string data;
     std::vector<std::string> commandString;
@@ -35,9 +66,16 @@ void Reception::terminalReader() const
             continue;
         if (data == "exit")
             break;
+        if (handleRequest(data))
+            continue;
         commandString = strToWordArr(data, ';');
-        for (size_t i = 0; i != commandString.size(); i++) {
-            std::cout << "result: " << regex_match(commandString.at(i), reg) << std::endl;
+        try {
+            for (auto &i : commandString) {
+                if (regex_match(i, reg))
+                    setOrders(strToWordArr(data, ';'));
+            }
+        } catch (Error::Order const &e) {
+            std::cout << e.what() << std::endl;
         }
     }
 }

@@ -36,6 +36,12 @@ namespace Error {
             File(const std::string &message) throw() : Error("File: " + message) {};
             virtual ~File() throw() {};
     };
+
+    class Order: public Error {
+        public:
+            Order(const std::string &message) throw() : Error("Order: " + message) {};
+            virtual ~Order() throw() {};
+    };
 }
 
 #endif /* !ERROR_HPP_ */

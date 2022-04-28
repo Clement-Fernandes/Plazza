@@ -9,7 +9,8 @@
 
 Order::Order(PizzaType const &type, PizzaSize const &size)
 {
-    
+    _type = type;
+    _size = size;
 }
 
 Order::~Order()
