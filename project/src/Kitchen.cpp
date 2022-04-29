@@ -9,10 +9,19 @@
 
 Kitchen::Kitchen()
 {
+    // _reception = std::make_unique<Reception>();
+
     std::cout << "Constructor Kitchen" << std::endl;
 }
 
 Kitchen::~Kitchen()
 {
     std::cout << "Destructor Kitchen" << std::endl;
+}
+
+void Kitchen::loop()
+{
+    while (true) {
+
+    }
 }

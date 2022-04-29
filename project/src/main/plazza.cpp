@@ -5,8 +5,6 @@
 ** plazza
 */
 
-#include <vector>
-#include <string>
 #include "plazza.hpp"
 #include "Reception.hpp"
 
