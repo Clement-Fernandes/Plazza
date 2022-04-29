@@ -42,6 +42,7 @@ class Reception {
         std::map<int, std::vector<Order>> _orders;
         size_t _orderNb = 0;
         size_t _nbCooks;
+        int _ingredientTime;
         float _cookingTime;
         std::vector<std::unordered_map<std::string, int>> _listKitchen;
         std::map<std::string, PizzaType> _allType = {

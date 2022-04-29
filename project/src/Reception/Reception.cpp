@@ -15,8 +15,10 @@
 Reception::Reception(float multiplier, int nbCook, int ingredientTime)
 {
     std::cout << "Constructor Reception" << std::endl;
-    _nbCooks = 2;
-    _cookingTime = 2000;
+    _nbCooks = nbCook;
+    _cookingTime = multiplier;
+    _ingredientTime = ingredientTime;
+
 }
 
 Reception::~Reception()
