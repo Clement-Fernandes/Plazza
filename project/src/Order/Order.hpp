@@ -8,19 +8,22 @@
 #ifndef ORDER_HPP_
     #define ORDER_HPP_
 
+    #include <string>
     #include "enum.hpp"
 
 class Order {
     public:
-        Order(PizzaType const &type, PizzaSize const &size);
+        Order(PizzaType const &type, PizzaSize const &size, std::string const &name);
         ~Order();
     public:
         PizzaType getType(void) const;
         PizzaSize getSize(void) const;
+        std::string getName(void) const;
 
     private:
         PizzaType _type;
         PizzaSize _size;
+        std::string _name;
 
 };
 
