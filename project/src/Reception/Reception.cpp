@@ -10,7 +10,7 @@
 #include "plazza.hpp"
 #include "Reception.hpp"
 
-Reception::Reception()
+Reception::Reception(float multiplier, int nbCook, int ingredientTime)
 {
 }
 
@@ -73,6 +73,8 @@ void Reception::terminalReader()
             for (auto &i : commandString) {
                 if (regex_match(i, reg))
                     setOrders(strToWordArr(data, ';'));
+                else
+                    throw Error::Order("Invalid command. Format is: [a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
             }
         } catch (Error::Order const &e) {
             std::cout << e.what() << std::endl;

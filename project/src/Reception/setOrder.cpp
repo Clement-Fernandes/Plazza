@@ -16,7 +16,7 @@ PizzaType Reception::getType(std::string const &str) const
     try {
         type = _allType.at(str);
     } catch (std::out_of_range const &) {
-        throw Error::Order("pizza type doesn't exist.");
+        throw Error::Order("Pizza type doesn't exist.");
     }
     return type;
 }
@@ -28,7 +28,7 @@ PizzaSize Reception::getSize(std::string const &str) const
     try {
         size = _allSize.at(str);
     } catch (std::out_of_range const &) {
-        throw Error::Order("pizza Size doesn't exist.");
+        throw Error::Order("Pizza size doesn't exist.");
     }
     return size;
 }
@@ -42,7 +42,7 @@ size_t Reception::getNumber(std::string const &str) const
     try {
         number = std::stoi(tmp);
     } catch (std::out_of_range const &) {
-        throw Error::Order("number out of range.");
+        throw Error::Order("Number out of range.");
     }
     return number;
 }

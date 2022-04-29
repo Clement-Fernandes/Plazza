@@ -13,7 +13,7 @@
 
 class Reception {
     public:
-        Reception();
+        Reception(float multiplier, int nbCook, int ingredientTime);
         ~Reception();
 
         void displayStatus(void) const;

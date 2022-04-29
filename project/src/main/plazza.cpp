@@ -12,7 +12,7 @@
 
 int plazza(std::vector<std::string> const &av)
 {
-    Reception reception;
+    Reception reception(std::stof(av[1]), std::stoi(av[2]), std::stoi(av[3]));
 
     printf("Welcome to the Plazza!\n");
     reception.terminalReader();
