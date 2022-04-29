@@ -35,7 +35,7 @@
         STEAK,
         EGGPLANT,
         GOATCHEESE,
-        CHEFLOVE
+        CHIEFLOVE
     };
 
 #endif /* !ENUM_HPP_ */
