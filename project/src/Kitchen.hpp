@@ -8,6 +8,7 @@
 #ifndef KITCHEN_HPP_
     #define KITCHEN_HPP_
 
+    #include <memory>
     #include <string>
     #include <iostream>
 
@@ -16,8 +17,11 @@ class Kitchen {
         Kitchen();
         ~Kitchen();
 
+        void loop();
+
     protected:
     private:
+        // std::unique_ptr<Reception> _reception;
 };
 
 #endif /* !KITCHEN_HPP_ */
