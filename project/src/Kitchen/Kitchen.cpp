@@ -7,10 +7,9 @@
 
 #include "Kitchen.hpp"
 
-Kitchen::Kitchen()
+Kitchen::Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, int writer, int reader) :
+    _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime), _writer(writer), _reader(reader)
 {
-    // _reception = std::make_unique<Reception>();
-
     std::cout << "Constructor Kitchen" << std::endl;
 }
 

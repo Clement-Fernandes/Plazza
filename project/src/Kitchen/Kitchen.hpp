@@ -14,14 +14,18 @@
 
 class Kitchen {
     public:
-        Kitchen();
+        Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, int writer, int reader);
         ~Kitchen();
 
         void loop();
 
     protected:
     private:
-        // std::unique_ptr<Reception> _reception;
+        float _cookingTime;
+        size_t _nbCooks;
+        int _ingredientTime;
+        int _writer;
+        int _reader;
 };
 
 #endif /* !KITCHEN_HPP_ */
