@@ -12,13 +12,9 @@
 #include "Error.hpp"
 #include "Reception.hpp"
 
-Reception::Reception(float multiplier, int nbCook, int ingredientTime)
+Reception::Reception(float cookingTime, size_t nbCook, int ingredientTime) : _cookingTime(cookingTime), _nbCooks(nbCook), _ingredientTime(ingredientTime)
 {
     std::cout << "Constructor Reception" << std::endl;
-    _nbCooks = nbCook;
-    _cookingTime = multiplier;
-    _ingredientTime = ingredientTime;
-
 }
 
 Reception::~Reception()
@@ -29,6 +25,18 @@ Reception::~Reception()
 void Reception::displayStatus(void) const
 {
     std::cout << "status" << std::endl;
+}
+
+void Reception::writeMessage(int fd, std::string const &text) const
+{
+    write(fd, text.c_str(), text.size());
+}
+
+int Reception::readMessage(int fd)
+{
+    if (read(fd, &_message, 2048) == -1)
+        return (-1);
+    return (0);
 }
 
 bool Reception::handleRequest(std::string const &data) const
@@ -59,32 +67,43 @@ bool Reception::handleRequest(std::string const &data) const
 
 void Reception::actionKitchen()
 {
-    int a[2];
-    int b[2];
+    int kitchenCom[2];
+    int receptionCom[2];
     pid_t pid = fork();
 
-    if (pipe(a) == -1 || pipe(b) == -1)
+    if (pipe(kitchenCom) == -1 || pipe(receptionCom) == -1)
         throw Error::Error("Pipe failed!");
     if (pid == 0) {
-        Kitchen kitchen;
+        Kitchen kitchen(_cookingTime, _nbCooks, _ingredientTime, kitchenCom[Com::Write], receptionCom[Com::Read]);
 
         kitchen.loop();
         exit(0);
     } else if (pid > 0) {
         std::unordered_map<std::string, int> info;
 
-        info["read"] = a[0];
-        info["write"] = b[1];
+        info["read"] = kitchenCom[Com::Read];
+        info["write"] = receptionCom[Com::Write];
         _listKitchen.push_back(info);
-        // printDebug();
     } else
         throw Error::Error("fork failed!");
 }
 
-void Reception::orderDistribution()
+void Reception::orderDistribution(std::vector<Order> const &orderList)
 {
-    // if create kitchen : actionKitchen()
-    actionKitchen();
+    size_t kitchenId;
+
+    for (auto order : orderList) {
+
+        for (kitchenId = 0; kitchenId < _listKitchen.size(); kitchenId++) {
+            std::string text(order.getName());
+
+            writeMessage(_listKitchen[kitchenId]["write"], text);
+            while (readMessage(_listKitchen[kitchenId]["read"]) != 1);
+
+        }
+        if (kitchenId == _listKitchen.size())
+            actionKitchen();
+    }
 }
 
 void Reception::terminalReader()
@@ -116,9 +135,6 @@ void Reception::terminalReader()
             }
         } catch (Error::Order const &e) {
             std::cout << e.what() << std::endl;
-        // for (size_t i = 0; i != commandString.size(); i++) {
-        //     if (regex_match(commandString.at(i), reg))
-        //         orderDistribution();
         }
     }
 }

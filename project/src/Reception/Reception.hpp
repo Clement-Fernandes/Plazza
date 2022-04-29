@@ -9,6 +9,7 @@
     #define RECEPTION_HPP_
 
     #include <map>
+    #include <any>
     #include <unordered_map>
     #include "enum.hpp"
     #include "Order.hpp"
@@ -17,15 +18,18 @@
 
 class Reception {
     public:
-        Reception(float multiplier, int nbCook, int ingredientTime);
+        Reception(float cookingTime, size_t nbCook, int ingredientTime);
         ~Reception();
 
         void displayStatus(void) const;
         bool handleRequest(std::string const &data) const;
         void terminalReader();
 
-        void orderDistribution();
+        void orderDistribution(std::vector<Order> const &orderList);
         void actionKitchen();
+
+        void writeMessage(int fd, std::string const &text) const;
+        int readMessage(int fd);
 
         size_t getNbCooks() const;
         float getCookingTime() const;
@@ -36,14 +40,19 @@ class Reception {
         PizzaSize getSize(std::string const &str) const;
         size_t getNumber(std::string const &str) const;
 
+        enum Com {
+            Read = 0,
+            Write = 1
+        };
 
     protected:
     private:
         std::map<int, std::vector<Order>> _orders;
         size_t _orderNb = 0;
+        float _cookingTime;
         size_t _nbCooks;
         int _ingredientTime;
-        float _cookingTime;
+        std::string _message;
         std::vector<std::unordered_map<std::string, int>> _listKitchen;
         std::map<std::string, PizzaType> _allType = {
             {"americana", PizzaType::Americana},

@@ -58,7 +58,8 @@ void Reception::setOrders(std::vector<std::string> const &commands)
         size_t nb = getNumber(orderStr.at(2));
 
         for (size_t y = 0; y != nb; y++)
-            orderList.push_back(Order(type, size));
+            orderList.push_back(Order(type, size, orderStr.at(0)));
     }
     _orders.insert({++_orderNb, orderList});
+    orderDistribution(orderList);
 }
