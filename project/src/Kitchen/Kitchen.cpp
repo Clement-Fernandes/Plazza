@@ -20,7 +20,8 @@ Kitchen::~Kitchen()
 
 void Kitchen::loop()
 {
-    while (true) {
+    // Cook cook(_fridge);
 
-    }
+    // while (true) {
+    // }
 }

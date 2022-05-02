@@ -6,15 +6,17 @@
 */
 
 #ifndef COOK_HPP_
-#define COOK_HPP_
+    #define COOK_HPP_
 
+    #include "Fridge.hpp"
 class Cook {
     public:
-        Cook();
+        Cook(Fridge &kitchenFridge);
         ~Cook();
 
     protected:
     private:
+        Fridge _kitchenFridge;
 };
 
 #endif /* !COOK_HPP_ */

@@ -5,12 +5,15 @@
 ** Cook
 */
 
+#include <iostream>
 #include "Cook.hpp"
 
-Cook::Cook()
+Cook::Cook(Fridge &kitchenFridge) : _kitchenFridge(kitchenFridge)
 {
+    std::cout << "Constructor Cook" << std::endl;
 }
 
 Cook::~Cook()
 {
+    std::cout << "Destructor Cook" << std::endl;
 }

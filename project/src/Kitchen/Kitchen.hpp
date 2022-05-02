@@ -8,9 +8,16 @@
 #ifndef KITCHEN_HPP_
     #define KITCHEN_HPP_
 
-    #include <memory>
-    #include <string>
     #include <iostream>
+    #include <thread>
+    #include <map>
+    #include <memory>
+    #include <vector>
+    #include "Order.hpp"
+    #include "enum.hpp"
+
+    #include "Fridge.hpp"
+    #include "Cook.hpp"
 
 class Kitchen {
     public:
@@ -26,6 +33,12 @@ class Kitchen {
         int _ingredientTime;
         int _writer;
         int _reader;
+        std::vector<Order> _orderList;
+        std::vector<Cook> _cooks;
+        Fridge _fridge;
+        // std::vector<std::thread> _cooksThread;
+        // std::vector<std::map<Ingredients, size_t>> _ingredients;
+
 };
 
 #endif /* !KITCHEN_HPP_ */

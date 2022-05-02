@@ -14,7 +14,9 @@ SOURCE			=	src/library/strToWordArr.cpp	\
 					src/Reception/Reception.cpp		\
 					src/Reception/setOrder.cpp		\
 					src/Kitchen/Kitchen.cpp			\
-					src/Order/Order.cpp			\
+					src/Fridge/Fridge.cpp			\
+					src/Order/Order.cpp				\
+					src/Cook/Cook.cpp				\
 
 
 MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
@@ -34,7 +36,7 @@ DELETE_FILE		?=	$(DELETE)
 DELETE_DIR		?=	$(DELETE) -r
 
 INCLUDE_DIRS	+=	-I src/Error/ -I include/ -I src/Order/ -I src/Reception/
-INCLUDE_DIRS	+=	-I src/Kitchen -I src/Cook
+INCLUDE_DIRS	+=	-I src/Kitchen/ -I src/Cook/ -I src/Fridge/
 
 CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)

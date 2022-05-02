@@ -12,8 +12,7 @@
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 
-class Clock
-    {
+class Clock {
     public:
         Clock();
         ~Clock();
