@@ -33,14 +33,20 @@ namespace Error {
 
     class File: public Error {
         public:
-            File(const std::string &message) throw() : Error("File: " + message) {};
+            File(std::string const &message) throw() : Error("File: " + message) {};
             virtual ~File() throw() {};
     };
 
     class Order: public Error {
         public:
-            Order(const std::string &message) throw() : Error("Order: " + message) {};
+            Order(std::string const &message) throw() : Error("Order: " + message) {};
             virtual ~Order() throw() {};
+    };
+
+    class Fridge : public Error {
+        public:
+            Fridge(std::string const &message) throw() : Error("Fridge: " + message) {};
+            virtual ~Fridge() throw() {};
     };
 }
 
