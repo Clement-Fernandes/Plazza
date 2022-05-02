@@ -48,6 +48,12 @@ namespace Error {
             Fridge(std::string const &message) throw() : Error("Fridge: " + message) {};
             virtual ~Fridge() throw() {};
     };
+
+    class IPC : public Error {
+        public:
+            IPC(std::string const &message) throw() : Error("IPC: " + message) {};
+            virtual ~IPC()  throw() {};
+    };
 }
 
 #endif /* !ERROR_HPP_ */

@@ -16,12 +16,14 @@
     #include "Order.hpp"
     #include "enum.hpp"
 
+    #include "IPC.hpp"
     #include "Fridge.hpp"
     #include "Cook.hpp"
 
 class Kitchen {
     public:
-        Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, int writer, int reader);
+        Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader);
+        // Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, int writer, int reader);
         ~Kitchen();
 
         void loop();
@@ -31,8 +33,10 @@ class Kitchen {
         float _cookingTime;
         size_t _nbCooks;
         int _ingredientTime;
-        int _writer;
-        int _reader;
+        IPC _writer;
+        // int _writer;
+        IPC _reader;
+        // int _reader;
         std::vector<Order> _orderList;
         std::vector<Cook> _cooks;
         Fridge _fridge;

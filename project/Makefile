@@ -5,18 +5,21 @@
 ## Makefile
 ##
 
-MAIN_SOURCE		=	src/main/main.cpp				\
+MAIN_SOURCE		=	src/main/main.cpp					\
 
-SOURCE			=	src/library/strToWordArr.cpp	\
-					src/library/displayFile.cpp		\
-					src/library/readFile.cpp		\
-					src/main/plazza.cpp				\
-					src/Reception/Reception.cpp		\
-					src/Reception/setOrder.cpp		\
-					src/Kitchen/Kitchen.cpp			\
-					src/Fridge/Fridge.cpp			\
-					src/Order/Order.cpp				\
-					src/Cook/Cook.cpp				\
+SOURCE			=	src/library/strToWordArr.cpp		\
+					src/library/displayFile.cpp			\
+					src/library/readFile.cpp			\
+					src/main/plazza.cpp					\
+					src/Reception/Reception.cpp			\
+					src/Reception/setOrder.cpp			\
+					src/Reception/orderDistribution.cpp	\
+					src/Kitchen/Kitchen.cpp				\
+					src/Fridge/Fridge.cpp				\
+					src/Order/Order.cpp					\
+					src/Cook/Cook.cpp					\
+					src/Classes/Process.cpp				\
+					src/Classes/IPC.cpp					\
 
 
 MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
@@ -36,7 +39,7 @@ DELETE_FILE		?=	$(DELETE)
 DELETE_DIR		?=	$(DELETE) -r
 
 INCLUDE_DIRS	+=	-I src/Error/ -I include/ -I src/Order/ -I src/Reception/
-INCLUDE_DIRS	+=	-I src/Kitchen/ -I src/Cook/ -I src/Fridge/
+INCLUDE_DIRS	+=	-I src/Kitchen/ -I src/Cook/ -I src/Fridge/ -I src/Classes/
 
 CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)

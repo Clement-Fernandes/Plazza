@@ -5,9 +5,12 @@
 ** Kitchen
 */
 
+#include "Error.hpp"
 #include "Kitchen.hpp"
+// #include "IPC.hpp"
 
-Kitchen::Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, int writer, int reader) :
+// Kitchen::Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, int writer, int reader) :
+Kitchen::Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader) :
     _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime), _writer(writer), _reader(reader)
 {
     std::cout << "Constructor Kitchen" << std::endl;
@@ -20,8 +23,8 @@ Kitchen::~Kitchen()
 
 void Kitchen::loop()
 {
-    // Cook cook(_fridge);
-
-    // while (true) {
-    // }
+    std::string message;
+    _reader >> message;
+    std::cout << "message recieve: " << message << std::endl;
+    _writer << message;
 }
