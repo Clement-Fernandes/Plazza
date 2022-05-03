@@ -17,7 +17,7 @@ void Reception::addKitchen()
     Process newProcess(1);
     _allProcesses.push_back(newProcess);
     if (newProcess.getPid() == 0) {
-        Kitchen kitchen(_cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception);
+        Kitchen kitchen(0, _cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception);
         kitchen.loop();
         exit(0);
     } else {
@@ -45,7 +45,7 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
                 try {
                     _listKitchen[kitchenId]["read"] >> response;
                     readed = true;
-                    if (response == "yes")
+                    if (response == "y")
                         messageGot = true;
                 } catch (Error::IPC const &) {}
             }

@@ -39,7 +39,8 @@ DELETE_FILE		?=	$(DELETE)
 DELETE_DIR		?=	$(DELETE) -r
 
 INCLUDE_DIRS	+=	-I src/Error/ -I include/ -I src/Order/ -I src/Reception/
-INCLUDE_DIRS	+=	-I src/Kitchen/ -I src/Cook/ -I src/Fridge/ -I src/Classes/ -I src/Clock/ -I src/IPC/ -I src/Process/
+INCLUDE_DIRS	+=	-I src/Kitchen/ -I src/Cook/ -I src/Fridge/ -I src/Classes/
+INCLUDE_DIRS	+=	-I src/Clock/ -I src/IPC/ -I src/Process/
 
 CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)

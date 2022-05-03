@@ -24,7 +24,34 @@ Reception::~Reception()
 
 void Reception::displayStatus(void) const
 {
-    std::cout << "status" << std::endl;
+    for (auto kitchen : _listKitchen)
+        kitchen["write"] << "s";
+}
+
+void Reception::exitPlazza(void)
+{
+    for (auto kitchen : _listKitchen) {
+        kitchen["write"] << "exit";
+    }
+    _isRunning = false;
+}
+
+bool Reception::handleSpecialRequest(std::string const &data)
+{
+    if (std::cin.eof()) {
+        exitPlazza();
+        return true;
+    } if (data.empty())
+        return true;
+    if (data == "exit") {
+        exitPlazza();
+        return true;
+    }
+    if (data == "status") {
+        displayStatus();
+        return true;
+    }
+    return false;
 }
 
 bool Reception::handleRequest(std::string const &data) const
@@ -46,10 +73,6 @@ bool Reception::handleRequest(std::string const &data) const
             request = true;
         }
     }
-    if (data == "status") {
-        request = true;
-        displayStatus();
-    }
     return request;
 }
 
@@ -59,17 +82,13 @@ void Reception::terminalReader()
     std::vector<std::string> commandString;
     std::regex reg("[a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
 
-    while (true) {
+    while (_isRunning) {
         if (commandString.empty())
             commandString.clear();
         std::cout << "> ";
         std::getline(std::cin, data);
-        if (std::cin.eof())
-            break;
-        if (data.empty())
+        if (handleSpecialRequest(data))
             continue;
-        if (data == "exit")
-            break;
         if (handleRequest(data))
             continue;
         commandString = strToWordArr(data, ';');
