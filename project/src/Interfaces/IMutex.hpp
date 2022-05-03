@@ -6,7 +6,7 @@
 */
 
 #ifndef IMUTEX_HPP_
-#define IMUTEX_HPP_
+    #define IMUTEX_HPP_
 
 class IMutex {
     public :

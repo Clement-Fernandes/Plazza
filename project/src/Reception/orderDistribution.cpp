@@ -10,6 +10,7 @@
 
 void Reception::addKitchen()
 {
+    std::cout << "create new Kitchen" << std::endl;
     IPC comReception;
     IPC comKitchen;
 
@@ -17,8 +18,6 @@ void Reception::addKitchen()
     _allProcesses.push_back(newProcess);
     if (newProcess.getPid() == 0) {
         Kitchen kitchen(_cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception);
-        // _allKitchen.push_back(kitchen);
-
         kitchen.loop();
         exit(0);
     } else {
@@ -36,21 +35,20 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
     std::string response;
 
     for (auto i = orderList.begin(); i != orderList.end();) {
-        for (kitchenId = 0; kitchenId < _listKitchen.size(); kitchenId++) {
-            std::string str = "pizza";
-            _listKitchen[kitchenId]["write"] << str;
+        bool messageGot = false;
+        for (kitchenId = 0; kitchenId < _listKitchen.size() && !messageGot; kitchenId++) {
+            std::string pizza = std::to_string(i->getType()) + " " + std::to_string(i->getSize());
             bool readed = false;
+
+            _listKitchen[kitchenId]["write"] << pizza;
             while (!readed) {
                 try {
                     _listKitchen[kitchenId]["read"] >> response;
                     readed = true;
-                } catch (Error::IPC const &) {
-                    std::cout << "catch something" << std::endl;
-                    continue;
-                }
+                    if (response == "yes")
+                        messageGot = true;
+                } catch (Error::IPC const &) {}
             }
-            std::cout << "message retrieve: " << response << std::endl;
-
         }
         if (kitchenId == _listKitchen.size())
             addKitchen();

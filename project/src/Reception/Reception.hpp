@@ -11,12 +11,9 @@
     #include <map>
     #include <any>
     #include <unordered_map>
-    #include "enum.hpp"
-    #include "Order.hpp"
     #include "Error.hpp"
     #include "Kitchen.hpp"
     #include "Process.hpp"
-    #include "IPC.hpp"
 
 class Reception {
     public:

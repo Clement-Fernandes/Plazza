@@ -22,7 +22,6 @@ SOURCE			=	src/library/strToWordArr.cpp		\
 					src/IPC/IPC.cpp						\
 					src/Clock/Clock.cpp					\
 
-
 MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
 
 OBJ				=	$(SOURCE:.cpp=.o)
