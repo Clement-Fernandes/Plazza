@@ -30,11 +30,10 @@ class Kitchen {
         IPC _reader;
         std::vector<Order> _orderList;
         std::vector<Cook> _cooks;
-        int keep = 5;
         Fridge _fridge;
-        // std::string _message;
-        bool _stop;
-        // std::vector<std::thread> _cooksThread;
+        std::string _message;
+        bool _isRunning;
+        std::vector<std::thread> _cooksThread;
         // std::vector<std::map<Ingredients, size_t>> _ingredients;
 
 };

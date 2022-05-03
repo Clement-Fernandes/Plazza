@@ -11,8 +11,8 @@
 Kitchen::Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader) :
     _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime), _writer(writer), _reader(reader)
 {
-    std::cout << "Constructor Kitchen" << std::endl;
-    _stop = false;
+    // std::cout << "Constructor Kitchen" << std::endl;
+    _isRunning = true;
 }
 
 Kitchen::~Kitchen()
@@ -21,13 +21,19 @@ Kitchen::~Kitchen()
 
 void Kitchen::loop()
 {
-    while (1) {
-        std::string message;
-        _reader >> message;
-        if (keep > 0) {
-            keep--;
-            _writer << "yes";
-        } else
-            _writer << "no";
+    while (_isRunning) {
+        _reader >> _message;
+
+        if (_message.compare("exit") == 0)
+            _isRunning = false;
+        else if (_orderList.size() >= _nbCooks * 2) {
+            _writer << "n";
+        } else {
+            std::string::size_type pos = _message.find(' ');
+            PizzaType type = (PizzaType) std::stoi(_message.substr(0, pos));
+            PizzaSize size = (PizzaSize) std::stoi(_message.substr(pos + 1));
+            _orderList.push_back({type, size});
+            _writer << "y";
+        }
     }
 }
