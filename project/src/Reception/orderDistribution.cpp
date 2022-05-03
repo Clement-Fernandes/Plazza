@@ -37,10 +37,10 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
     for (auto i = orderList.begin(); i != orderList.end();) {
         bool messageGot = false;
         for (kitchenId = 0; kitchenId < _listKitchen.size() && !messageGot; kitchenId++) {
-            std::string str = "pizza";
+            std::string pizza = std::to_string(i->getType()) + " " + std::to_string(i->getSize());
             bool readed = false;
 
-            _listKitchen[kitchenId]["write"] << str;
+            _listKitchen[kitchenId]["write"] << pizza;
             while (!readed) {
                 try {
                     _listKitchen[kitchenId]["read"] >> response;
@@ -49,7 +49,6 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
                         messageGot = true;
                 } catch (Error::IPC const &) {}
             }
-            std::cout << "message retrieve: " << response << std::endl;
         }
         if (kitchenId == _listKitchen.size())
             addKitchen();
