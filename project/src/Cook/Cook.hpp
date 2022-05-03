@@ -9,6 +9,7 @@
     #define COOK_HPP_
 
     #include "Fridge.hpp"
+
 class Cook {
     public:
         Cook(Fridge &kitchenFridge);

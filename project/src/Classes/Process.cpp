@@ -5,8 +5,6 @@
 ** Process
 */
 
-#include <unistd.h>
-#include <iostream>
 #include "Error.hpp"
 #include "Process.hpp"
 
@@ -26,7 +24,6 @@ Process::Process(int)
 Process::~Process()
 {
     std::cout << "Process Destructor" << std::endl;
-    // exit(0);
 }
 
 pid_t Process::getPid() const

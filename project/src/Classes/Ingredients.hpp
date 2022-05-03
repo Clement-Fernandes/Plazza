@@ -6,7 +6,7 @@
 */
 
 #ifndef INGREDIENTS_HPP_
-#define INGREDIENTS_HPP_
+    #define INGREDIENTS_HPP_
 
 enum class Ingredients {
     DOE = 1,
