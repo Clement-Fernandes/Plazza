@@ -56,17 +56,17 @@ all:	$(NAME)
 
 $(NAME):	$(MAIN_OBJ) $(OBJ)
 	@$(CXX) -o $(NAME) $(MAIN_OBJ) $(OBJ) $(LDFLAGS)
-	@printf "[\033[0;36mbuilt\033[0m] % 35s\n" $(NAME) | tr ' ' '.'
+	@printf "[\033[0;36mbuilt\033[0m] % 20s\n" $(NAME) | tr ' ' '.'
 
 clean:
 	@$(DELETE_FILE) $(MAIN_OBJ)
-	@printf "[\033[0;31mdeleted\033[0m] % 35s\n" $(MAIN_OBJ) | tr ' ' '.'
+	@printf "[\033[0;31mdeleted\033[0m] % 33s\n" $(MAIN_OBJ) | tr ' ' '.'
 	@$(DELETE_FILE) $(OBJ)
-	@printf "[\033[0;31mdeleted\033[0m] % 35s\n" $(OBJ) | tr ' ' '.'
+	@printf "[\033[0;31mdeleted\033[0m] % 33s\n" $(OBJ) | tr ' ' '.'
 
 fclean:	clean
 	@$(DELETE_FILE) $(NAME)
-	@printf "[\033[0;31mdeleted\033[0m] % 35s\n" $(NAME) | tr ' ' '.'
+	@printf "[\033[0;35msuppressed\033[0m] % 20s\n" $(NAME) | tr ' ' '.'
 
 re:	fclean all
 
