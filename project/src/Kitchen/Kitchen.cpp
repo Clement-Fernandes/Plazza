@@ -9,10 +9,10 @@
 #include "Kitchen.hpp"
 
 Kitchen::Kitchen(int id, float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader) :
-    _id(id), _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime), _writer(writer), _reader(reader)
+    _id(id), _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridge(cookingTime))
 {
-    std::cout << "Constructor Kitchen" << std::endl;
-    _stop = false;
+    // std::cout << "Constructor Kitchen" << std::endl;
+    _isRunning = true;
 }
 
 Kitchen::~Kitchen()
@@ -21,25 +21,28 @@ Kitchen::~Kitchen()
 
 void Kitchen::loop()
 {
-    while (!_stop) {
-        std::string message;
-        _reader >> message;
-        if (handleMessage(message))
+    while (_isRunning) {
+        _reader >> _message;
+        if (handleMessage())
             continue;
-        if (keep > 0) {
-            keep--;
-            _writer << "y";
-        } else
+        if (_orderList.size() >= _nbCooks * 2) {
             _writer << "n";
+        } else {
+            std::string::size_type pos = _message.find(' ');
+            PizzaType type = (PizzaType) std::stoi(_message.substr(0, pos));
+            PizzaSize size = (PizzaSize) std::stoi(_message.substr(pos + 1));
+            _orderList.push_back({type, size});
+            _writer << "y";
+        }
     }
 }
 
-bool Kitchen::handleMessage(std::string const &message)
+bool Kitchen::handleMessage(void)
 {
-    if (message == "exit") {
-        _stop = true;
+    if (_message == "exit") {
+        _isRunning = false;
         return true;
-    } if (message == "s") {
+    } if (_message == "s") {
         displayStatus();
         return true;
     }
@@ -50,6 +53,6 @@ void Kitchen::displayStatus(void)
 {
     std::cout << "Kitchen " << _id << std::endl;
     for (auto i : _orderList) {
-        std::cout << i.getName() << std::endl;
+        std::cout << i.getType() << std::endl;
     }
 }

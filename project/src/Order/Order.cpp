@@ -7,8 +7,8 @@
 
 #include "Order.hpp"
 
-Order::Order(PizzaType const &type, PizzaSize const &size, std::string const &name) :
-    _type(type), _size(size), _name(name)
+Order::Order(PizzaType const &type, PizzaSize const &size) :
+    _type(type), _size(size)
 {
 }
 
@@ -26,7 +26,7 @@ PizzaSize Order::getSize(void) const
     return _size;
 }
 
-std::string Order::getName(void) const
-{
-    return _name;
-}
+// std::string Order::getName(void) const
+// {
+//     return _name;
+// }

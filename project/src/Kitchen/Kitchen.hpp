@@ -20,7 +20,7 @@ class Kitchen {
         ~Kitchen();
 
         void loop();
-        bool handleMessage(std::string const &message);
+        bool handleMessage(void);
         void displayStatus(void);
 
     protected:
@@ -29,7 +29,7 @@ class Kitchen {
         int _id;
 
         /* specify when the kitchen need to close */
-        bool _stop;
+        bool _isRunning;
 
         /* Basics argument (send at execute time) */
         float _cookingTime;
@@ -40,17 +40,22 @@ class Kitchen {
         IPC _writer;
         IPC _reader;
 
+        /* message get in _reader */
+        std::string _message;
+
         /* Contain the list of cooks of the kitchen */
         std::vector<Cook> _cooks;
 
         /* Contain all ingredients of the kitchen */
         Fridge _fridge;
 
+        /* list of cooks Thread */
+        std::vector<std::thread> _cooksThread;
+        // std::vector<std::map<Ingredients, size_t>> _ingredients;
+
         /* Contain the list of order in the kitchen */
         std::vector<Order> _orderList;
 
-        int keep = 5;
-        // std::vector<std::thread> _cooksThread;
 };
 
 #endif /* !KITCHEN_HPP_ */

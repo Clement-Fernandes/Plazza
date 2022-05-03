@@ -9,7 +9,10 @@
 #include "Clock.hpp"
 #include "Fridge.hpp"
 
-Fridge::Fridge()
+#define MAX_SIZE 5 // a remplacer par le replaceIngredientTime
+#define DEFAULT_TIME -1
+
+Fridge::Fridge(float cookingTime) : _cookingTime(cookingTime)
 {
     _allIngredients = {
         {Ingredients::DOE, MAX_SIZE},
@@ -64,9 +67,9 @@ bool Fridge::hasIngredients(std::vector<Ingredients> const &ingredientsList)
 }
 
 
-static bool checkRefill(long long int first, long long int second)
+bool Fridge::checkRefill(long long int first, long long int second)
 {
-    if (second - first > MAX_SIZE)
+    if (second - first > _cookingTime)
         return (true);
     return (false);
 }

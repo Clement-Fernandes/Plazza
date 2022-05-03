@@ -8,16 +8,59 @@
 #ifndef COOK_HPP_
     #define COOK_HPP_
 
+    #include <chrono>
     #include "Fridge.hpp"
 
 class Cook {
     public:
-        Cook(Fridge &kitchenFridge);
+        Cook(Fridge &kitchenFridge, float cookingTime);
         ~Cook();
+        int getCookingTime(PizzaType pizza);
+        void cookLife(PizzaType pizza, PizzaSize size);
+        void checkActivity(void);
 
     protected:
     private:
         Fridge _kitchenFridge;
+        bool _active;
+        int _inactiveTime;
+        int _cookingTime;
+        int _cookingPizza;
+        std::map<std::pair<PizzaType, PizzaSize>, bool> _pizzaList;
+        std::map<PizzaType, int> _bakeTime;
+        std::map<PizzaType, std::vector<Ingredients>> _recipes = {
+            {
+                PizzaType::Margarita, {
+                    Ingredients::DOE,
+                    Ingredients::TOMATOE,
+                    Ingredients::GRUYERE
+                }},
+            {PizzaType::Regina, {
+                    Ingredients::DOE,
+                    Ingredients::TOMATOE,
+                    Ingredients::GRUYERE,
+                    Ingredients::HAM,
+                    Ingredients::MUSHROOMS
+                }
+            },
+            {
+                PizzaType::Americana, {
+                    Ingredients::DOE,
+                    Ingredients::TOMATOE,
+                    Ingredients::GRUYERE,
+                    Ingredients::STEAK
+                }
+            },
+            {
+                PizzaType::Fantasia, {
+                    Ingredients::DOE,
+                    Ingredients::TOMATOE,
+                    Ingredients::EGGPLANT,
+                    Ingredients::GOATCHEESE,
+                    Ingredients::CHIEFLOVE
+                }
+            }
+        };
 };
 
 #endif /* !COOK_HPP_ */
