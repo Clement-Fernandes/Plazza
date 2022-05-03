@@ -8,7 +8,7 @@
 #ifndef ENUM_HPP_
     #define ENUM_HPP_
 
-    enum class PizzaType
+    enum PizzaType
     {
         Regina = 1,
         Margarita = 2,
@@ -16,7 +16,7 @@
         Fantasia = 8
     };
 
-    enum class PizzaSize
+    enum PizzaSize
     {
         S = 1,
         M = 2,

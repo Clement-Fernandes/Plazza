@@ -13,9 +13,9 @@
     #include <map>
     #include <memory>
     #include <vector>
+    #include <unistd.h>
     #include "Order.hpp"
     #include "enum.hpp"
-
     #include "Fridge.hpp"
     #include "Cook.hpp"
 
@@ -36,6 +36,8 @@ class Kitchen {
         std::vector<Order> _orderList;
         std::vector<Cook> _cooks;
         Fridge _fridge;
+        // std::string _message;
+        bool _stop;
         // std::vector<std::thread> _cooksThread;
         // std::vector<std::map<Ingredients, size_t>> _ingredients;
 

@@ -91,18 +91,26 @@ void Reception::actionKitchen()
 void Reception::orderDistribution(std::vector<Order> const &orderList)
 {
     size_t kitchenId;
+    size_t i = 0;
 
-    for (auto order : orderList) {
+    while (i < orderList.size()) {
 
         for (kitchenId = 0; kitchenId < _listKitchen.size(); kitchenId++) {
-            std::string text(order.getName());
+            std::string pizza(std::to_string(orderList.at(i).getType()) + std::to_string(orderList.at(i).getSize()));
 
-            writeMessage(_listKitchen[kitchenId]["write"], text);
-            while (readMessage(_listKitchen[kitchenId]["read"]) != 1);
+            writeMessage(_listKitchen[kitchenId]["write"], pizza);
+            while (readMessage(_listKitchen[kitchenId]["read"]) == 1);
 
+            if (this->_message[0] == 'y') {
+                break;
+            }
         }
-        if (kitchenId == _listKitchen.size())
+        if (kitchenId == _listKitchen.size()) {
             actionKitchen();
+        }
+        else {
+            i += 1;
+        }
     }
 }
 

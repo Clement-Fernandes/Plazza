@@ -18,7 +18,6 @@ SOURCE			=	src/library/strToWordArr.cpp	\
 					src/Order/Order.cpp				\
 					src/Cook/Cook.cpp				\
 
-
 MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
 
 OBJ				=	$(SOURCE:.cpp=.o)

@@ -11,6 +11,7 @@ Kitchen::Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, int writ
     _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime), _writer(writer), _reader(reader)
 {
     std::cout << "Constructor Kitchen" << std::endl;
+    _stop = false;
 }
 
 Kitchen::~Kitchen()
@@ -22,6 +23,6 @@ void Kitchen::loop()
 {
     // Cook cook(_fridge);
 
-    // while (true) {
+    // while (!_stop) {
     // }
 }
