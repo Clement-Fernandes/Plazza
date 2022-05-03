@@ -27,18 +27,6 @@ void Reception::displayStatus(void) const
     std::cout << "status" << std::endl;
 }
 
-void Reception::writeMessage(int fd, std::string const &text) const
-{
-    write(fd, text.c_str(), text.size());
-}
-
-int Reception::readMessage(int fd)
-{
-    if (read(fd, &_message, 2048) == -1)
-        return (-1);
-    return (0);
-}
-
 bool Reception::handleRequest(std::string const &data) const
 {
     bool request = false;
@@ -63,55 +51,6 @@ bool Reception::handleRequest(std::string const &data) const
         displayStatus();
     }
     return request;
-}
-
-void Reception::actionKitchen()
-{
-    int kitchenCom[2];
-    int receptionCom[2];
-    pid_t pid = fork();
-
-    if (pipe(kitchenCom) == -1 || pipe(receptionCom) == -1)
-        throw Error::Error("Pipe failed!");
-    if (pid == 0) {
-        Kitchen kitchen(_cookingTime, _nbCooks, _ingredientTime, kitchenCom[Com::Write], receptionCom[Com::Read]);
-
-        kitchen.loop();
-        exit(0);
-    } else if (pid > 0) {
-        std::unordered_map<std::string, int> info;
-
-        info["read"] = kitchenCom[Com::Read];
-        info["write"] = receptionCom[Com::Write];
-        _listKitchen.push_back(info);
-    } else
-        throw Error::Error("fork failed!");
-}
-
-void Reception::orderDistribution(std::vector<Order> const &orderList)
-{
-    size_t kitchenId;
-    size_t i = 0;
-
-    while (i < orderList.size()) {
-
-        for (kitchenId = 0; kitchenId < _listKitchen.size(); kitchenId++) {
-            std::string pizza(std::to_string(orderList.at(i).getType()) + std::to_string(orderList.at(i).getSize()));
-
-            writeMessage(_listKitchen[kitchenId]["write"], pizza);
-            while (readMessage(_listKitchen[kitchenId]["read"]) == 1);
-
-            if (this->_message[0] == 'y') {
-                break;
-            }
-        }
-        if (kitchenId == _listKitchen.size()) {
-            actionKitchen();
-        }
-        else {
-            i += 1;
-        }
-    }
 }
 
 void Reception::terminalReader()

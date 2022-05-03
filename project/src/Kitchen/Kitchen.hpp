@@ -8,20 +8,15 @@
 #ifndef KITCHEN_HPP_
     #define KITCHEN_HPP_
 
-    #include <iostream>
     #include <thread>
-    #include <map>
     #include <memory>
-    #include <vector>
-    #include <unistd.h>
     #include "Order.hpp"
-    #include "enum.hpp"
-    #include "Fridge.hpp"
+    #include "IPC.hpp"
     #include "Cook.hpp"
 
 class Kitchen {
     public:
-        Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, int writer, int reader);
+        Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader);
         ~Kitchen();
 
         void loop();
@@ -31,8 +26,8 @@ class Kitchen {
         float _cookingTime;
         size_t _nbCooks;
         int _ingredientTime;
-        int _writer;
-        int _reader;
+        IPC _writer;
+        IPC _reader;
         std::vector<Order> _orderList;
         std::vector<Cook> _cooks;
         Fridge _fridge;

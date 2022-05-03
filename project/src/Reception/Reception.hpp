@@ -11,10 +11,9 @@
     #include <map>
     #include <any>
     #include <unordered_map>
-    #include "enum.hpp"
-    #include "Order.hpp"
     #include "Error.hpp"
     #include "Kitchen.hpp"
+    #include "Process.hpp"
 
 class Reception {
     public:
@@ -26,10 +25,7 @@ class Reception {
         void terminalReader();
 
         void orderDistribution(std::vector<Order> const &orderList);
-        void actionKitchen();
-
-        void writeMessage(int fd, std::string const &text) const;
-        int readMessage(int fd);
+        void addKitchen();
 
         size_t getNbCooks() const;
         float getCookingTime() const;
@@ -53,7 +49,10 @@ class Reception {
         size_t _nbCooks;
         int _ingredientTime;
         std::string _message;
-        std::vector<std::unordered_map<std::string, int>> _listKitchen;
+        // std::vector<std::unordered_map<std::string, int>> _listKitchen;
+        // std::vector<Kitchen> _allKitchen;
+        std::vector<Process> _allProcesses;
+        std::vector<std::unordered_map<std::string, IPC>> _listKitchen;
         std::map<std::string, PizzaType> _allType = {
             {"americana", PizzaType::Americana},
             {"fantasia", PizzaType::Fantasia},
