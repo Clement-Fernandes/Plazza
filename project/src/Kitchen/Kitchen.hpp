@@ -28,9 +28,9 @@ class Kitchen {
         int _ingredientTime;
         IPC _writer;
         IPC _reader;
+        Fridge _fridge;
         std::vector<Order> _orderList;
         std::vector<Cook> _cooks;
-        Fridge _fridge;
         std::string _message;
         bool _isRunning;
         std::vector<std::thread> _cooksThread;
