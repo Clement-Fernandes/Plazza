@@ -10,6 +10,7 @@
 
 void Reception::addKitchen()
 {
+    std::cout << "create new Kitchen" << std::endl;
     IPC comReception;
     IPC comKitchen;
 
@@ -34,18 +35,21 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
     std::string response;
 
     for (auto i = orderList.begin(); i != orderList.end();) {
-        for (kitchenId = 0; kitchenId < _listKitchen.size(); kitchenId++) {
+        bool messageGot = false;
+        for (kitchenId = 0; kitchenId < _listKitchen.size() && !messageGot; kitchenId++) {
             std::string str = "pizza";
-            _listKitchen[kitchenId]["write"] << str;
             bool readed = false;
+
+            _listKitchen[kitchenId]["write"] << str;
             while (!readed) {
                 try {
                     _listKitchen[kitchenId]["read"] >> response;
                     readed = true;
+                    if (response == "yes")
+                        messageGot = true;
                 } catch (Error::IPC const &) {}
             }
             std::cout << "message retrieve: " << response << std::endl;
-
         }
         if (kitchenId == _listKitchen.size())
             addKitchen();

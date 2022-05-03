@@ -32,7 +32,7 @@ void IPC::operator >>(std::string &message)
 
     if (!mess)
         throw Error::Error("malloc failed");
-    if (read(_com[Read], mess, 2048) == -1)
+    if (read(_com[Read], mess, 2047) == -1)
         throw Error::IPC("Read: Failed to read");
     message = mess;
     free(mess);
