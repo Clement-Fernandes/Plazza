@@ -51,7 +51,7 @@ void Cook::checkActivity(void)
 
 void Cook::cookLife(PizzaType pizza, PizzaSize size)
 {
-    if (_pizzaList.size() == MAX_QUEUE); // check si le vecteur est bien inferieur au max de pizza pouvant etre stockées
+    //if (_pizzaList.size() == MAX_QUEUE) // check si le vecteur est bien inferieur au max de pizza pouvant etre stockées
         //(à faire) return (Pas de place disponible)
     checkActivity(); // check si le cuisinier est entrain de travailler
     _pizzaList.insert({{pizza, size}, false}); // stock la pizza dans le vecteur
