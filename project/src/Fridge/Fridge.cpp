@@ -9,20 +9,21 @@
 #include "Clock.hpp"
 #include "Fridge.hpp"
 
+#define MAX_SIZE 5 // a remplacer par le replaceIngredientTime
 #define DEFAULT_TIME -1
 
 Fridge::Fridge(float cookingTime) : _cookingTime(cookingTime)
 {
     _allIngredients = {
-        {Ingredients::DOE, _cookingTime},
-        {Ingredients::TOMATOE, _cookingTime},
-        {Ingredients::GRUYERE, _cookingTime},
-        {Ingredients::HAM, _cookingTime},
-        {Ingredients::MUSHROOMS, _cookingTime},
-        {Ingredients::STEAK, _cookingTime},
-        {Ingredients::EGGPLANT, _cookingTime},
-        {Ingredients::GOATCHEESE, _cookingTime},
-        {Ingredients::CHIEFLOVE, _cookingTime}
+        {Ingredients::DOE, MAX_SIZE},
+        {Ingredients::TOMATOE, MAX_SIZE},
+        {Ingredients::GRUYERE, MAX_SIZE},
+        {Ingredients::HAM, MAX_SIZE},
+        {Ingredients::MUSHROOMS, MAX_SIZE},
+        {Ingredients::STEAK, MAX_SIZE},
+        {Ingredients::EGGPLANT, MAX_SIZE},
+        {Ingredients::GOATCHEESE, MAX_SIZE},
+        {Ingredients::CHIEFLOVE, MAX_SIZE}
     };
     _timer = {
         {Ingredients::DOE, {DEFAULT_TIME, DEFAULT_TIME}},
@@ -79,7 +80,7 @@ void Fridge::refillIngredients()
 
     while (_running) {
         for (auto i : _allIngredients)
-            if (i.second < _cookingTime && _timer.at(i.first).first != DEFAULT_TIME)
+            if (i.second < MAX_SIZE && _timer.at(i.first).first != DEFAULT_TIME)
                 _timer.at(i.first).first = clock.getElapsedTime();
         for (auto i : _timer)
             if (i.second.first != DEFAULT_TIME) {

@@ -22,7 +22,7 @@ class Cook {
     private:
         Fridge _kitchenFridge;
         int _cookingTime;
-        std::map<PizzaType, PizzaSize> _pizzaList;
+        std::map<std::pair<PizzaType, PizzaSize>, bool> _pizzaList;
         std::map<PizzaType, int> _bakeTime;
         std::map<PizzaType, std::vector<Ingredients>> _recipes = {
             {
