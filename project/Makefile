@@ -45,6 +45,8 @@ CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)
 CXXFLAGS		+=	-std=c++2a
 
+LDFLAGS		+=	-lpthread
+
 all:	$(NAME)
 
 $(NAME):	$(MAIN_OBJ) $(OBJ)
