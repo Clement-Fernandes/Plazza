@@ -28,10 +28,10 @@ class Kitchen {
         int _ingredientTime;
         IPC _writer;
         IPC _reader;
+        Fridge _fridge;
         std::vector<Order> _orderList;
         std::vector<Cook> _cooks;
         int keep = 5;
-        Fridge _fridge;
         // std::string _message;
         bool _stop;
         // std::vector<std::thread> _cooksThread;
