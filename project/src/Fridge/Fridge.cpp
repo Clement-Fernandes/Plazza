@@ -6,21 +6,34 @@
 */
 
 #include "Error.hpp"
+#include "Clock.hpp"
 #include "Fridge.hpp"
 
 Fridge::Fridge()
 {
     _allIngredients = {
-        {Ingredients::DOE, 5},
-        {Ingredients::TOMATOE, 5},
-        {Ingredients::GRUYERE, 5},
-        {Ingredients::HAM, 5},
-        {Ingredients::MUSHROOMS, 5},
-        {Ingredients::STEAK, 5},
-        {Ingredients::EGGPLANT, 5},
-        {Ingredients::GOATCHEESE, 5},
-        {Ingredients::CHIEFLOVE, 5}
+        {Ingredients::DOE, MAX_SIZE},
+        {Ingredients::TOMATOE, MAX_SIZE},
+        {Ingredients::GRUYERE, MAX_SIZE},
+        {Ingredients::HAM, MAX_SIZE},
+        {Ingredients::MUSHROOMS, MAX_SIZE},
+        {Ingredients::STEAK, MAX_SIZE},
+        {Ingredients::EGGPLANT, MAX_SIZE},
+        {Ingredients::GOATCHEESE, MAX_SIZE},
+        {Ingredients::CHIEFLOVE, MAX_SIZE}
     };
+    _timer = {
+        {Ingredients::DOE, {DEFAULT_TIME, DEFAULT_TIME}},
+        {Ingredients::TOMATOE, {DEFAULT_TIME, DEFAULT_TIME}},
+        {Ingredients::GRUYERE, {DEFAULT_TIME, DEFAULT_TIME}},
+        {Ingredients::HAM, {DEFAULT_TIME, DEFAULT_TIME}},
+        {Ingredients::MUSHROOMS, {DEFAULT_TIME, DEFAULT_TIME}},
+        {Ingredients::STEAK, {DEFAULT_TIME, DEFAULT_TIME}},
+        {Ingredients::EGGPLANT, {DEFAULT_TIME, DEFAULT_TIME}},
+        {Ingredients::GOATCHEESE, {DEFAULT_TIME, DEFAULT_TIME}},
+        {Ingredients::CHIEFLOVE, {DEFAULT_TIME, DEFAULT_TIME}}
+    };
+    _running = true;
 }
 
 Fridge::~Fridge()
@@ -48,6 +61,34 @@ bool Fridge::hasIngredients(std::vector<Ingredients> const &ingredientsList)
         };
     }
     return true;
+}
+
+
+static bool checkRefill(long long int first, long long int second)
+{
+    if (second - first > MAX_SIZE)
+        return (true);
+    return (false);
+}
+
+void Fridge::refillIngredients()
+{
+    Clock clock;
+
+    while (_running) {
+        for (auto i : _allIngredients)
+            if (i.second < MAX_SIZE && _timer.at(i.first).first != DEFAULT_TIME)
+                _timer.at(i.first).first = clock.getElapsedTime();
+        for (auto i : _timer)
+            if (i.second.first != DEFAULT_TIME) {
+                i.second.second = clock.getElapsedTime();
+                if (checkRefill(i.second.first, i.second.second)) {
+                    _allIngredients.at(i.first) += 1;
+                    _timer.at(i.first).first = DEFAULT_TIME;
+                    _timer.at(i.first).second = DEFAULT_TIME;
+                }
+            }
+    }
 }
 
 void Fridge::printDebug() const

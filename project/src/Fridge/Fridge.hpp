@@ -12,6 +12,8 @@
     #include <map>
     #include "enum.hpp"
 
+    #define MAX_SIZE 5
+    #define DEFAULT_TIME -1
 class Fridge {
     public:
         Fridge();
@@ -19,12 +21,14 @@ class Fridge {
 
         bool getIngredients(std::vector<Ingredients> const &ingredientsList);
         void printDebug() const;
+        void refillIngredients();
 
     protected:
     private:
         bool hasIngredients(std::vector<Ingredients> const &ingredientsList);
-
+        bool _running;
         std::map<Ingredients, size_t> _allIngredients;
+        std::map<Ingredients, std::pair<long long int, long long int>> _timer;
 };
 
 #endif /* !FRIDGE_HPP_ */
