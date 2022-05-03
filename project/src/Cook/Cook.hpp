@@ -17,11 +17,15 @@ class Cook {
         ~Cook();
         int getCookingTime(PizzaType pizza);
         void cookLife(PizzaType pizza, PizzaSize size);
+        void checkActivity(void);
 
     protected:
     private:
         Fridge _kitchenFridge;
+        bool _active;
+        int _inactiveTime;
         int _cookingTime;
+        int _cookingPizza;
         std::map<std::pair<PizzaType, PizzaSize>, bool> _pizzaList;
         std::map<PizzaType, int> _bakeTime;
         std::map<PizzaType, std::vector<Ingredients>> _recipes = {
