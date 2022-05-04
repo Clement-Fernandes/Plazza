@@ -9,8 +9,6 @@
 #include "Error.hpp"
 #include "Kitchen.hpp"
 
-// extern int id;
-
 Kitchen::Kitchen(size_t id, float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader) :
 _id(id), _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridge(cookingTime))
 {
@@ -26,7 +24,6 @@ void Kitchen::loop()
 {
     while (_isRunning) {
         std::cout << "Kitchen  " << _id << ": " << std::endl;
-        // _message.clear();
         _reader >> _message;
 
         if (_message.compare("exit") == 0)
@@ -42,4 +39,24 @@ void Kitchen::loop()
         }
     }
     std::cout << "Kitchen " << _id << " closed !" << std::endl;
+}
+
+bool Kitchen::handleMessage(void)
+{
+    if (_message == "exit") {
+        _isRunning = false;
+        return true;
+    } if (_message == "s") {
+        displayStatus();
+        return true;
+    }
+    return false;
+}
+
+void Kitchen::displayStatus(void)
+{
+    std::cout << "Kitchen " << _id << std::endl;
+    for (auto i : _orderList) {
+        std::cout << i.getType() << std::endl;
+    }
 }

@@ -39,25 +39,34 @@ DELETE_FILE		?=	$(DELETE)
 DELETE_DIR		?=	$(DELETE) -r
 
 INCLUDE_DIRS	+=	-I src/Error/ -I include/ -I src/Order/ -I src/Reception/
-INCLUDE_DIRS	+=	-I src/Kitchen/ -I src/Cook/ -I src/Fridge/ -I src/Classes/ -I src/Clock/ -I src/IPC/ -I src/Process/
+INCLUDE_DIRS	+=	-I src/Kitchen/ -I src/Cook/ -I src/Fridge/ -I src/Classes/
+INCLUDE_DIRS	+=	-I src/Clock/ -I src/IPC/ -I src/Process/
 
 CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)
 CXXFLAGS		+=	-std=c++2a
 
-LDFLAGS		+=	-lpthread
+LDFLAGS			+=	-lpthread
+
+%.o: %.cpp
+		@printf "[\033[0;32mcompiled\033[0m] % 35s\n" $< | tr ' ' '.'
+		@$(CC) -c -o $@ $< $(CXXFLAGS) $(LDFLAGS)
 
 all:	$(NAME)
 
 $(NAME):	$(MAIN_OBJ) $(OBJ)
-	$(CXX) -o $(NAME) $(MAIN_OBJ) $(OBJ) -lpthread
+	@$(CXX) -o $(NAME) $(MAIN_OBJ) $(OBJ) $(LDFLAGS)
+	@printf "[\033[0;36mbuilt\033[0m] % 20s\n" $(NAME) | tr ' ' '.'
 
 clean:
-	$(DELETE_FILE) $(MAIN_OBJ)
-	$(DELETE_FILE) $(OBJ)
+	@$(DELETE_FILE) $(MAIN_OBJ)
+	@printf "[\033[0;31mdeleted\033[0m] % 33s\n" $(MAIN_OBJ) | tr ' ' '.'
+	@$(DELETE_FILE) $(OBJ)
+	@printf "[\033[0;31mdeleted\033[0m] % 33s\n" $(OBJ) | tr ' ' '.'
 
 fclean:	clean
-	$(DELETE_FILE) $(NAME)
+	@$(DELETE_FILE) $(NAME)
+	@printf "[\033[0;35msuppressed\033[0m] % 20s\n" $(NAME) | tr ' ' '.'
 
 re:	fclean all
 

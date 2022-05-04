@@ -26,7 +26,35 @@ void Reception::closeKitchen()
 {
     for (size_t i = 0; i < _listKitchen.size(); i++)
         _listKitchen[i]["write"] << "exit";
+    for (auto kitchen : _listKitchen)
+        kitchen["write"] << "s";
 }
+
+void Reception::exitPlazza(void)
+{
+    for (auto kitchen : _listKitchen) {
+        kitchen["write"] << "exit";
+    }
+    _isRunning = false;
+}
+
+// bool Reception::handleSpecialRequest(std::string const &data)
+// {
+//     if (std::cin.eof()) {
+//         exitPlazza();
+//         return true;
+//     } if (data.empty())
+//         return true;
+//     if (data == "exit") {
+//         exitPlazza();
+//         return true;
+//     }
+//     if (data == "status") {
+//         displayStatus();
+//         return true;
+//     }
+//     return false;
+// }
 
 void Reception::analyseOrder(std::string const &data)
 {

@@ -22,14 +22,25 @@ class Reception {
 
         void analyseOrder(std::string const &data);
 
-        void orderDistribution(std::vector<Order> const &orderList);
-        void addKitchen(size_t id);
+        // void orderDistribution(std::vector<Order> const &orderList);
+
+        // Reception.cpp
+        void displayStatus(void) const;
+        void exitPlazza(void);
+        // bool handleSpecialRequest(std::string const &data);
+        // bool handleRequest(std::string const &data) const;
 
         size_t getNbCooks() const;
         float getCookingTime() const;
         void printDebug() const;
         void closeKitchen();
 
+        // orderDistribution.cpp
+        void orderDistribution(std::vector<Order> const &orderList);
+        void addKitchen(size_t id);
+        // void addKitchen();
+
+        // setOrder.cpp
         void setOrders(std::vector<std::string> const &commands);
         PizzaType getType(std::string const &type) const;
         PizzaSize getSize(std::string const &str) const;
@@ -42,6 +53,7 @@ class Reception {
 
     protected:
     private:
+        bool _isRunning = true;
         std::map<int, std::vector<Order>> _orders;
         size_t _orderNb = 0;
         float _cookingTime;
