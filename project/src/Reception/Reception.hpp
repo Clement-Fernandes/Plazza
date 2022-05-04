@@ -22,8 +22,6 @@ class Reception {
 
         void analyseOrder(std::string const &data);
 
-        // void orderDistribution(std::vector<Order> const &orderList);
-
         // Reception.cpp
         void displayStatus(void) const;
         void exitPlazza(void);
@@ -38,7 +36,6 @@ class Reception {
         // orderDistribution.cpp
         void orderDistribution(std::vector<Order> const &orderList);
         void addKitchen(size_t id);
-        // void addKitchen();
 
         // setOrder.cpp
         void setOrders(std::vector<std::string> const &commands);

@@ -25,9 +25,8 @@ class Kitchen {
 
     protected:
     private:
-        size_t _id;
         // /* id is to status && log datas */
-        // int _id;
+        size_t _id;
 
         /* specify when the kitchen need to close */
         bool _isRunning;
