@@ -15,6 +15,7 @@ class Cook {
     public:
         Cook(Fridge &kitchenFridge, float cookingTime);
         ~Cook();
+
         int getCookingTime(PizzaType pizza);
         void cookLife(PizzaType pizza, PizzaSize size);
 
@@ -30,8 +31,10 @@ class Cook {
                     Ingredients::DOE,
                     Ingredients::TOMATOE,
                     Ingredients::GRUYERE
-                }},
-            {PizzaType::Regina, {
+                }
+            },
+            {
+                PizzaType::Regina, {
                     Ingredients::DOE,
                     Ingredients::TOMATOE,
                     Ingredients::GRUYERE,

@@ -16,13 +16,14 @@
 
 class Kitchen {
     public:
-        Kitchen(float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader);
+        Kitchen(size_t id, float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader);
         ~Kitchen();
 
         void loop();
 
     protected:
     private:
+        size_t _id;
         float _cookingTime;
         size_t _nbCooks;
         int _ingredientTime;

@@ -5,7 +5,6 @@
 ** Cook
 */
 
-#include <thread>
 #include <iostream>
 #include "Cook.hpp"
 
@@ -34,7 +33,6 @@ int Cook::getCookingTime(PizzaType pizza)
 
 void Cook::cookLife(PizzaType pizza, PizzaSize size)
 {
-    // Fridge fridge(_cookingTime);
     int cooking = 0;
 
     if (_pizzaList.size() == MAX_QUEUE); // check si le vecteur est bien inferieur au max de pizza pouvant etre stockées

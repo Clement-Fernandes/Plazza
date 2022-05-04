@@ -20,16 +20,15 @@ class Reception {
         Reception(float cookingTime, size_t nbCook, int ingredientTime);
         ~Reception();
 
-        void displayStatus(void) const;
-        bool handleRequest(std::string const &data) const;
-        void terminalReader();
+        void analyseOrder(std::string const &data);
 
         void orderDistribution(std::vector<Order> const &orderList);
-        void addKitchen();
+        void addKitchen(size_t id);
 
         size_t getNbCooks() const;
         float getCookingTime() const;
         void printDebug() const;
+        void closeKitchen();
 
         void setOrders(std::vector<std::string> const &commands);
         PizzaType getType(std::string const &type) const;
@@ -49,8 +48,6 @@ class Reception {
         size_t _nbCooks;
         int _ingredientTime;
         std::string _message;
-        // std::vector<std::unordered_map<std::string, int>> _listKitchen;
-        // std::vector<Kitchen> _allKitchen;
         std::vector<Process> _allProcesses;
         std::vector<std::unordered_map<std::string, IPC>> _listKitchen;
         std::map<std::string, PizzaType> _allType = {

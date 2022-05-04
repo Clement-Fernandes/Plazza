@@ -50,7 +50,7 @@ LDFLAGS		+=	-lpthread
 all:	$(NAME)
 
 $(NAME):	$(MAIN_OBJ) $(OBJ)
-	$(CXX) -o $(NAME) $(MAIN_OBJ) $(OBJ)
+	$(CXX) -o $(NAME) $(MAIN_OBJ) $(OBJ) -lpthread
 
 clean:
 	$(DELETE_FILE) $(MAIN_OBJ)

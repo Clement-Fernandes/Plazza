@@ -8,16 +8,16 @@
 #include "Process.hpp"
 #include "Reception.hpp"
 
-void Reception::addKitchen()
+void Reception::addKitchen(size_t id)
 {
-    // std::cout << "Create new Kitchen" << std::endl;
     IPC comReception;
     IPC comKitchen;
-
     Process newProcess(1);
+
     _allProcesses.push_back(newProcess);
     if (newProcess.getPid() == 0) {
-        Kitchen kitchen(_cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception);
+        Kitchen kitchen(id, _cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception);
+
         kitchen.loop();
         exit(0);
     } else {
@@ -33,11 +33,9 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
 {
     size_t kitchenId;
     std::string response;
-    // int it = 0;
 
     for (auto i = orderList.begin(); i != orderList.end(); kitchenId++) {
         bool messageGot = false;
-        // std::cout << "Iteration : " << it << ", Pizza type : " << i->getType() << std::endl;
 
         for (kitchenId = 0; kitchenId < _listKitchen.size(); kitchenId++) {
             std::string pizza = std::to_string(i->getType()) + " " + std::to_string(i->getSize());
@@ -57,14 +55,9 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
             if (messageGot == true)
                 break;
         }
-        // std::cout << "kitchenID : " << kitchenId << std::endl;
         if (kitchenId == _listKitchen.size())
-            addKitchen();
-        else {
-            // std::cout << "Pizza " << it << " attribué !" << std::endl;
-            // std::cout << " " << std::endl;
-            // it++;
+            addKitchen(kitchenId + 1);
+        else
             i++;
-        }
     }
 }
