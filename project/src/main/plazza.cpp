@@ -44,6 +44,8 @@ static bool stopPlazza(std::string const data)
 {
     if (std::cin.eof())
         return true;
+    if (data.empty())
+        return false;
     if (data == "exit")
         return true;
     return false;
@@ -59,8 +61,6 @@ int plazza(std::vector<std::string> const &av)
     while (running) {
         std::cout << "> ";
         std::getline(std::cin, data);
-        if (data.empty())
-            continue;
         if (stopPlazza(data)) {
             running = false;
             continue;

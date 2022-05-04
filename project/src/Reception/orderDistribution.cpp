@@ -56,7 +56,7 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
                 break;
         }
         if (kitchenId == _listKitchen.size())
-            addKitchen(kitchenId + 1);
+            addKitchen(kitchenId);
         else
             i++;
     }

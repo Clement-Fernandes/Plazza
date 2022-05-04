@@ -23,7 +23,6 @@ Kitchen::~Kitchen()
 void Kitchen::loop()
 {
     while (_isRunning) {
-        std::cout << "Kitchen  " << _id << ": " << std::endl;
         _reader >> _message;
 
         if (_message.compare("exit") == 0)
@@ -34,6 +33,7 @@ void Kitchen::loop()
             std::string::size_type pos = _message.find(' ');
             PizzaType type = (PizzaType) std::stoi(_message.substr(0, pos));
             PizzaSize size = (PizzaSize) std::stoi(_message.substr(pos + 1));
+
             _orderList.push_back({type, size});
             _writer << "y";
         }
@@ -56,7 +56,7 @@ bool Kitchen::handleMessage(void)
 void Kitchen::displayStatus(void)
 {
     std::cout << "Kitchen " << _id << std::endl;
-    for (auto i : _orderList) {
-        std::cout << i.getType() << std::endl;
-    }
+    // for (auto i : _orderList) {
+    //     std::cout << i.getType() << std::endl;
+    // }
 }

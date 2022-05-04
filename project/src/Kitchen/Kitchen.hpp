@@ -25,7 +25,7 @@ class Kitchen {
 
     protected:
     private:
-        // /* id is to status && log datas */
+        /* id is to status && log datas */
         size_t _id;
 
         /* specify when the kitchen need to close */
