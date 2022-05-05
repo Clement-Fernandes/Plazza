@@ -6,6 +6,7 @@
 */
 
 #include <queue>
+#include <unistd.h>
 #include "Error.hpp"
 #include "Kitchen.hpp"
 
@@ -27,7 +28,9 @@ void Kitchen::loop()
 
         if (_message.compare("exit") == 0)
             _isRunning = false;
-        else if (_orderList.size() >= _nbCooks * 2)
+        else if (_message.compare("status") == 0) {
+            displayStatus();
+        } else if (_orderList.size() >= _nbCooks * 2)
             _writer << "n";
         else {
             std::string::size_type pos = _message.find(' ');
@@ -56,7 +59,4 @@ bool Kitchen::handleMessage(void)
 void Kitchen::displayStatus(void)
 {
     std::cout << "Kitchen " << _id << std::endl;
-    // for (auto i : _orderList) {
-    //     std::cout << i.getType() << std::endl;
-    // }
 }

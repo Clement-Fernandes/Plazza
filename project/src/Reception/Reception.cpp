@@ -26,8 +26,6 @@ void Reception::closeKitchen()
 {
     for (size_t i = 0; i < _listKitchen.size(); i++)
         _listKitchen[i]["write"] << "exit";
-    for (auto kitchen : _listKitchen)
-        kitchen["write"] << "s";
 }
 
 void Reception::exitPlazza(void)
@@ -36,6 +34,12 @@ void Reception::exitPlazza(void)
         kitchen["write"] << "exit";
     }
     _isRunning = false;
+}
+
+void Reception::displayStatus(void)
+{
+    for (size_t i = 0; i < _listKitchen.size(); i++)
+        _listKitchen[i]["write"] << "status";
 }
 
 // bool Reception::handleSpecialRequest(std::string const &data)

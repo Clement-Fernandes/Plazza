@@ -23,10 +23,9 @@ class Reception {
         void analyseOrder(std::string const &data);
 
         // Reception.cpp
-        void displayStatus(void) const;
+        void displayStatus(void);
         void exitPlazza(void);
         // bool handleSpecialRequest(std::string const &data);
-        // bool handleRequest(std::string const &data) const;
 
         size_t getNbCooks() const;
         float getCookingTime() const;
