@@ -21,6 +21,7 @@ SOURCE			=	src/library/strToWordArr.cpp		\
 					src/Process/Process.cpp				\
 					src/IPC/IPC.cpp						\
 					src/Clock/Clock.cpp					\
+					src/ThreadPool/ThreadPool.cpp		\
 
 MAIN_OBJ		=	$(MAIN_SOURCE:.cpp=.o)
 
@@ -40,7 +41,7 @@ DELETE_DIR		?=	$(DELETE) -r
 
 INCLUDE_DIRS	+=	-I src/Error/ -I include/ -I src/Order/ -I src/Reception/
 INCLUDE_DIRS	+=	-I src/Kitchen/ -I src/Cook/ -I src/Fridge/ -I src/Classes/
-INCLUDE_DIRS	+=	-I src/Clock/ -I src/IPC/ -I src/Process/
+INCLUDE_DIRS	+=	-I src/Clock/ -I src/IPC/ -I src/Process/ -I src/ThreadPool/
 
 CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)

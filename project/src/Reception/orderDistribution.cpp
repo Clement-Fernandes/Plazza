@@ -8,7 +8,7 @@
 #include "Process.hpp"
 #include "Reception.hpp"
 
-void Reception::addKitchen(size_t id)
+void Reception::addKitchen(std::size_t id)
 {
     IPC comReception;
     IPC comKitchen;
@@ -31,7 +31,7 @@ void Reception::addKitchen(size_t id)
 
 void Reception::orderDistribution(std::vector<Order> const &orderList)
 {
-    size_t kitchenId;
+    std::size_t kitchenId;
     std::string response;
 
     for (auto i = orderList.begin(); i != orderList.end(); kitchenId++) {

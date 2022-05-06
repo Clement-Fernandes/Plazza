@@ -63,3 +63,8 @@ void Cook::cookLife(PizzaType pizza, PizzaSize size)
     _pizzaList.erase(_pizzaList.begin()); // il supprime la pizza du vecteur pour passer à la suivante
     // (à faire) il refait un tour de boucle
 }
+
+void Cook::cookPizza(Order const &order)
+{
+    std::cout << "type: " << order.getType() << ", size: " << order.getSize() << std::endl;
+}

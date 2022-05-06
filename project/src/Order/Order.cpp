@@ -26,7 +26,9 @@ PizzaSize Order::getSize(void) const
     return _size;
 }
 
-// std::string Order::getName(void) const
-// {
-//     return _name;
-// }
+Order &Order::operator =(Order const &order)
+{
+    _type = order.getType();
+    _size = order.getSize();
+    return *this;
+}

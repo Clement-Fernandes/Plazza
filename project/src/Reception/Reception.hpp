@@ -17,7 +17,7 @@
 
 class Reception {
     public:
-        Reception(float cookingTime, size_t nbCook, int ingredientTime);
+        Reception(float cookingTime, std::size_t nbCook, int ingredientTime);
         ~Reception();
 
         void analyseOrder(std::string const &data);
@@ -27,20 +27,20 @@ class Reception {
         void exitPlazza(void);
         // bool handleSpecialRequest(std::string const &data);
 
-        size_t getNbCooks() const;
+        std::size_t getNbCooks() const;
         float getCookingTime() const;
         void printDebug() const;
         void closeKitchen();
 
         // orderDistribution.cpp
         void orderDistribution(std::vector<Order> const &orderList);
-        void addKitchen(size_t id);
+        void addKitchen(std::size_t id);
 
         // setOrder.cpp
         void setOrders(std::vector<std::string> const &commands);
         PizzaType getType(std::string const &type) const;
         PizzaSize getSize(std::string const &str) const;
-        size_t getNumber(std::string const &str) const;
+        std::size_t getNumber(std::string const &str) const;
 
         enum Com {
             Read = 0,
@@ -51,9 +51,9 @@ class Reception {
     private:
         bool _isRunning = true;
         std::map<int, std::vector<Order>> _orders;
-        size_t _orderNb = 0;
+        std::size_t _orderNb = 0;
         float _cookingTime;
-        size_t _nbCooks;
+        std::size_t _nbCooks;
         int _ingredientTime;
         std::string _message;
         std::vector<Process> _allProcesses;

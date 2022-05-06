@@ -15,6 +15,7 @@
 class Fridge {
     public:
         Fridge(float cookingTime);
+        Fridge() {};
         ~Fridge();
 
         bool getIngredients(std::vector<Ingredients> const &ingredientsList);
@@ -27,7 +28,7 @@ class Fridge {
         bool hasIngredients(std::vector<Ingredients> const &ingredientsList);
         float _cookingTime;
         bool _running;
-        std::map<Ingredients, size_t> _allIngredients;
+        std::map<Ingredients, std::size_t> _allIngredients;
         std::map<Ingredients, std::pair<long long int, long long int>> _timer;
 };
 

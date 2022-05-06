@@ -12,7 +12,7 @@
 #include "Error.hpp"
 #include "Reception.hpp"
 
-Reception::Reception(float cookingTime, size_t nbCook, int ingredientTime) : _cookingTime(cookingTime), _nbCooks(nbCook), _ingredientTime(ingredientTime)
+Reception::Reception(float cookingTime, std::size_t nbCook, int ingredientTime) : _cookingTime(cookingTime), _nbCooks(nbCook), _ingredientTime(ingredientTime)
 {
     std::cout << "Constructor Reception" << std::endl;
 }
@@ -24,7 +24,7 @@ Reception::~Reception()
 
 void Reception::closeKitchen()
 {
-    for (size_t i = 0; i < _listKitchen.size(); i++)
+    for (std::size_t i = 0; i < _listKitchen.size(); i++)
         _listKitchen[i]["write"] << "exit";
 }
 
@@ -38,7 +38,7 @@ void Reception::exitPlazza(void)
 
 void Reception::displayStatus(void)
 {
-    for (size_t i = 0; i < _listKitchen.size(); i++)
+    for (std::size_t i = 0; i < _listKitchen.size(); i++)
         _listKitchen[i]["write"] << "status";
 }
 
@@ -77,7 +77,7 @@ void Reception::analyseOrder(std::string const &data)
     }
 }
 
-size_t Reception::getNbCooks() const
+std::size_t Reception::getNbCooks() const
 {
     return _nbCooks;
 }

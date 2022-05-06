@@ -20,7 +20,7 @@ void extractOrders()
     std::ifstream file("include/.log");
     std::string extractedValues;
 
-    for (size_t index = 1; file.good(); index++) {
+    for (std::size_t index = 1; file.good(); index++) {
         std::getline(file, extractedValues);
         if (extractedValues.length() != 0)
             orders.push_back(extractedValues);

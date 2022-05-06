@@ -10,15 +10,18 @@
 
     #include <chrono>
     #include "Fridge.hpp"
+    #include "Order.hpp"
 
 class Cook {
     public:
         Cook(Fridge &kitchenFridge, float cookingTime);
+        Cook() {};
         ~Cook();
 
         int getCookingTime(PizzaType pizza);
         void cookLife(PizzaType pizza, PizzaSize size);
         void checkActivity(void);
+        void cookPizza(Order const &order);
 
     protected:
     private:

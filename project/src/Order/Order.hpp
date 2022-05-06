@@ -13,8 +13,11 @@
 
 class Order {
     public:
+        Order() {};
         Order(PizzaType const &type, PizzaSize const &size);
         ~Order();
+
+        Order &operator =(Order const &order);
     public:
         PizzaType getType(void) const;
         PizzaSize getSize(void) const;

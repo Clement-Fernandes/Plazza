@@ -10,13 +10,15 @@
 
     #include <thread>
     #include <memory>
+    #include <queue>
     #include "Order.hpp"
     #include "IPC.hpp"
     #include "Cook.hpp"
+    #include "ThreadPool.hpp"
 
 class Kitchen {
     public:
-        Kitchen(size_t id, float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader);
+        Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, IPC writer, IPC reader);
         ~Kitchen();
 
         void loop();
@@ -26,14 +28,14 @@ class Kitchen {
     protected:
     private:
         /* id is to status && log datas */
-        size_t _id;
+        std::size_t _id;
 
         /* specify when the kitchen need to close */
         bool _isRunning;
 
         /* Basics argument (send at execute time) */
         float _cookingTime;
-        size_t _nbCooks;
+        std::size_t _nbCooks;
         int _ingredientTime;
 
         /* IPC to communicate with the reception */
@@ -50,11 +52,12 @@ class Kitchen {
         Fridge _fridge;
 
         /* list of cooks Thread */
-        std::vector<std::thread> _cooksThread;
         // std::vector<std::map<Ingredients, size_t>> _ingredients;
 
         /* Contain the list of order in the kitchen */
-        std::vector<Order> _orderList;
+        std::queue<Order> _orderList;
+
+        ThreadPool _threadPool;
 
 };
 

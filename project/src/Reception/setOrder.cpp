@@ -33,10 +33,10 @@ PizzaSize Reception::getSize(std::string const &str) const
     return size;
 }
 
-size_t Reception::getNumber(std::string const &str) const
+std::size_t Reception::getNumber(std::string const &str) const
 {
     std::string tmp = str;
-    int number = 0;
+    std::size_t number = 0;
 
     tmp.erase(0, 1);
     try {
@@ -55,9 +55,9 @@ void Reception::setOrders(std::vector<std::string> const &commands)
         std::vector<std::string> orderStr = strToWordArr(*i, ' ');
         PizzaType type = getType(orderStr.at(0));
         PizzaSize size = getSize(orderStr.at(1));
-        size_t nb = getNumber(orderStr.at(2));
+        std::size_t nb = getNumber(orderStr.at(2));
 
-        for (size_t y = 0; y != nb; y++)
+        for (std::size_t y = 0; y != nb; y++)
             orderList.push_back(Order(type, size));
     }
     _orders.insert({++_orderNb, orderList});

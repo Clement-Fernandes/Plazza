@@ -10,19 +10,29 @@
 #include "Error.hpp"
 #include "Kitchen.hpp"
 
-Kitchen::Kitchen(size_t id, float cookingTime, size_t nbCooks, int ingredientTime, IPC writer, IPC reader) :
-_id(id), _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridge(cookingTime))
+void cookPizza(Order const &order)
+{
+    std::cout << "type: " << order.getType() << ", size: " << order.getSize() << std::endl;
+}
+
+Kitchen::Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, IPC writer, IPC reader) :
+_id(id), _cookingTime(cookingTime), _nbCooks(nbCooks),
+_ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridge(cookingTime))
 {
     // std::cout << "Constructor Kitchen" << std::endl;
+    _threadPool.start(nbCooks);
     _isRunning = true;
 }
 
 Kitchen::~Kitchen()
 {
+    _threadPool.Stop();
 }
 
 void Kitchen::loop()
 {
+    std::map<PizzaType, std::function<void ()>> bakeFunction;
+
     while (_isRunning) {
         _reader >> _message;
 
@@ -37,7 +47,8 @@ void Kitchen::loop()
             PizzaType type = (PizzaType) std::stoi(_message.substr(0, pos));
             PizzaSize size = (PizzaSize) std::stoi(_message.substr(pos + 1));
 
-            _orderList.push_back({type, size});
+            _orderList.push({type, size});
+            _threadPool.QueueJob(_orderList.front());//cookPizza, 
             _writer << "y";
         }
     }
