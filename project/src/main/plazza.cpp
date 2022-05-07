@@ -49,9 +49,9 @@ int plazza(std::vector<std::string> const &av)
     std::string data;
     bool running = true;
 
-    printColored("Welcome to the Plazza!\n", COLOR::BLUE);
+    printColored("Welcome to the Plazza!", COLOR::BLUE);
     while (running) {
-        printColored("> ", COLOR::CYAN);
+        printColored("> ", COLOR::CYAN, false);
         std::getline(std::cin, data);
         if (stopPlazza(data)) {
             running = false;

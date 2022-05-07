@@ -32,6 +32,6 @@ std::vector<std::string> strToWordArr(std::string const &_line, char delim);
 std::string readFile(std::string const &filename, std::string const &sep);
 void displayFile(std::string const &filename, std::ostream &stream);
 
-void printColored(std::string text, enum COLOR);
+void printColored(std::string text, enum COLOR color, bool lineBreak = true);
 
 #endif /* !PLAZZA_HPP_ */
