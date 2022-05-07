@@ -49,9 +49,9 @@ int plazza(std::vector<std::string> const &av)
     std::string data;
     bool running = true;
 
-    std::cout << "\033[1;34mWelcome to the Plazza!\033[0m" << std::endl;
+    printColored("Welcome to the Plazza!\n", COLOR::BLUE);
     while (running) {
-        std::cout << "\033[1;36m> \033[0m";
+        printColored("> ", COLOR::CYAN);
         std::getline(std::cin, data);
         if (stopPlazza(data)) {
             running = false;

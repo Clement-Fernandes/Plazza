@@ -14,11 +14,24 @@
     #include <string>
     #include <vector>
 
+enum COLOR {
+    BLACK = 30,
+    RED = 31,
+    GREEN = 32,
+    YELLOW = 33,
+    BLUE = 34,
+    PURPLE = 35,
+    CYAN = 36,
+    WHITE = 37
+};
+
 int plazza(std::vector<std::string> const &av);
 
 std::vector<std::string> strToWordArr(std::string const &_line, char delim);
 
 std::string readFile(std::string const &filename, std::string const &sep);
 void displayFile(std::string const &filename, std::ostream &stream);
+
+void printColored(std::string text, enum COLOR);
 
 #endif /* !PLAZZA_HPP_ */
