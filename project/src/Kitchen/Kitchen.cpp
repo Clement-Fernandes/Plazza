@@ -6,6 +6,7 @@
 */
 
 #include <queue>
+#include <iomanip>
 #include <unistd.h>
 #include "Error.hpp"
 #include "plazza.hpp"
@@ -55,5 +56,5 @@ void Kitchen::loop()
 
 void Kitchen::displayStatus(void)
 {
-    printText("Kitchen n°" + std::to_string(_id)  + ": (running for " + std::to_string(_clock.getElapsedTime() / 1000) + "s)");
+    printText("Kitchen n°" + std::to_string(_id)  + ": (running for " + std::to_string(_clock.getElapsedTime(true)) + "s)");
 }

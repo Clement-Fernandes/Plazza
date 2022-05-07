@@ -39,14 +39,12 @@ namespace Error {
 
     class Order: public Error {
         public:
-            // Order(std::string const &message, bool colored = false) throw() : Error("Order: " + message) {};
             Order(std::string const &message, bool colored = false) throw() : Error((colored) ? ("\033[1;31mOrder: " + message + "\033[0m") : ("Order: " + message)) {};
             virtual ~Order() throw() {};
     };
 
     class Fridge : public Error {
         public:
-            // Fridge(std::string const &message, bool colored = false) throw() : Error("Fridge: " + message) {};
             Fridge(std::string const &message, bool colored = false) throw() : Error((colored) ? ("\033[1;31mFridge: " + message + "\033[0m") : ("Fridge: " + message)) {};
 
             virtual ~Fridge() throw() {};
@@ -54,7 +52,6 @@ namespace Error {
 
     class IPC : public Error {
         public:
-            // IPC(std::string const &message, bool colored = false) throw() : Error("IPC: " + message) {};
             IPC(std::string const &message, bool colored = false) throw() : Error((colored) ? ("\033[1;31mIPC: " + message + "\033[0m") : ("IPC: " + message)) {};
 
             virtual ~IPC()  throw() {};

@@ -9,6 +9,7 @@
 #define CLOCK_HPP_
 
 #include <chrono>
+#include <math.h>
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 
@@ -23,7 +24,7 @@ class Clock {
         void start();
         void restart();
 
-        long long int getElapsedTime();
+        long long int getElapsedTime(bool toSeconds = false);
 
     protected:
     private:

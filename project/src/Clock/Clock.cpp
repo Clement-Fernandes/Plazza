@@ -35,10 +35,10 @@ void Clock::restart()
     _start = std::chrono::system_clock::now();
 }
 
-long long int Clock::getElapsedTime()
+long long int Clock::getElapsedTime(bool toSeconds)
 {
     _end = std::chrono::system_clock::now();
     _elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(_end - _start).count();
 
-    return (_elapsedTime);
-};
+    return (static_cast<float>((toSeconds) ? (_elapsedTime / 1000) : _elapsedTime));
+}
