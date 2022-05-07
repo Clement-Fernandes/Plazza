@@ -14,19 +14,19 @@
 class Order {
     public:
         Order() {};
-        Order(PizzaType const &type, PizzaSize const &size);
+        Order(std::size_t orderNb, PizzaType const &type, PizzaSize const &size);
         ~Order();
 
         Order &operator =(Order const &order);
     public:
-        PizzaType getType(void) const;
-        PizzaSize getSize(void) const;
-        // std::string getName(void) const;
+        std::size_t getOrderNb() const;
+        PizzaType getType() const;
+        PizzaSize getSize() const;
 
     private:
+        std::size_t _orderNb;
         PizzaType _type;
         PizzaSize _size;
-        // std::string _name;
 
 };
 

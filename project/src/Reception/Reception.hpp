@@ -17,30 +17,29 @@
 
 class Reception {
     public:
+        // Reception.cpp
         Reception(float cookingTime, std::size_t nbCook, int ingredientTime);
         ~Reception();
 
-        void analyseOrder(std::string const &data);
-
-        // Reception.cpp
-        void displayStatus(void);
-        void exitPlazza(void);
-        // bool handleSpecialRequest(std::string const &data);
-
         std::size_t getNbCooks() const;
         float getCookingTime() const;
-        void printDebug() const;
-        void closeKitchen();
+        int getIngredientTime() const;
 
-        // orderDistribution.cpp
-        void orderDistribution(std::vector<Order> const &orderList);
-        void addKitchen(std::size_t id);
+        void displayStatus();
+
+        void analyseOrder(std::string const &data);
+
+        void printDebug() const;
 
         // setOrder.cpp
         void setOrders(std::vector<std::string> const &commands);
         PizzaType getType(std::string const &type) const;
         PizzaSize getSize(std::string const &str) const;
         std::size_t getNumber(std::string const &str) const;
+
+        // orderDistribution.cpp
+        void orderDistribution(std::vector<Order> const &orderList);
+        void addKitchen(std::size_t id);
 
         enum Com {
             Read = 0,
@@ -49,21 +48,18 @@ class Reception {
 
     protected:
     private:
-        bool _isRunning = true;
-        std::map<int, std::vector<Order>> _orders;
-        std::size_t _orderNb = 0;
         float _cookingTime;
         std::size_t _nbCooks;
         int _ingredientTime;
-        std::string _message;
-        std::vector<Process> _allProcesses;
-        std::vector<std::unordered_map<std::string, IPC>> _listKitchen;
+
+        /* All existing pizza type */
         std::map<std::string, PizzaType> _allType = {
             {"americana", PizzaType::Americana},
             {"fantasia", PizzaType::Fantasia},
             {"margarita", PizzaType::Margarita},
             {"regina", PizzaType::Regina},
         };
+        /* All existing pizza size */
         std::map<std::string, PizzaSize> _allSize = {
             {"S", PizzaSize::S},
             {"M", PizzaSize::M},
@@ -71,6 +67,15 @@ class Reception {
             {"XL", PizzaSize::XL},
             {"XXL", PizzaSize::XXL},
         };
+
+        /* List of all orders */
+        std::size_t _orderNb = 0;
+        std::map<int, std::vector<Order>> _orders;
+
+
+        std::string _message;
+        std::vector<Process> _allProcesses;
+        std::vector<std::unordered_map<std::string, IPC>> _listKitchen;
 };
 
 #endif /* !RECEPTION_HPP_ */

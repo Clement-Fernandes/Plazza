@@ -22,7 +22,6 @@ class Kitchen {
         ~Kitchen();
 
         void loop();
-        bool handleMessage(void);
         void displayStatus(void);
 
     protected:

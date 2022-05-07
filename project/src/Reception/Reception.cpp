@@ -20,61 +20,9 @@ Reception::Reception(float cookingTime, std::size_t nbCook, int ingredientTime) 
 Reception::~Reception()
 {
     std::cout << "Destructor Reception" << std::endl;
-}
-
-void Reception::closeKitchen()
-{
+    std::cout << _listKitchen.size() << std::endl;
     for (std::size_t i = 0; i < _listKitchen.size(); i++)
-        _listKitchen[i]["write"] << "exit";
-}
-
-void Reception::exitPlazza(void)
-{
-    for (auto kitchen : _listKitchen) {
-        kitchen["write"] << "exit";
-    }
-    _isRunning = false;
-}
-
-void Reception::displayStatus(void)
-{
-    for (std::size_t i = 0; i < _listKitchen.size(); i++)
-        _listKitchen[i]["write"] << "status";
-}
-
-// bool Reception::handleSpecialRequest(std::string const &data)
-// {
-//     if (std::cin.eof()) {
-//         exitPlazza();
-//         return true;
-//     } if (data.empty())
-//         return true;
-//     if (data == "exit") {
-//         exitPlazza();
-//         return true;
-//     }
-//     if (data == "status") {
-//         displayStatus();
-//         return true;
-//     }
-//     return false;
-// }
-
-void Reception::analyseOrder(std::string const &data)
-{
-    std::vector<std::string> commandString = strToWordArr(data, ';');;
-    std::regex reg("[a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
-
-    try {
-        for (auto &i : commandString) {
-            if (regex_match(i, reg))
-                setOrders(strToWordArr(data, ';'));
-            else
-                throw Error::Order("Invalid command. Format is: [a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
-        }
-    } catch (Error::Order const &e) {
-        std::cout << e.what() << std::endl;
-    }
+        _listKitchen.at(i)["write"] << "exit";
 }
 
 std::size_t Reception::getNbCooks() const
@@ -87,10 +35,45 @@ float Reception::getCookingTime() const
     return _cookingTime;
 }
 
+int Reception::getIngredientTime() const
+{
+    return _ingredientTime;
+}
+
+void Reception::displayStatus()
+{
+    std::cout << "\033[1;34mStatus of Plazza\033[0m" << std::endl;
+    std::cout << "Orders placed: " << _orderNb << " order(s)" << std::endl;
+    std::cout <<"Cooks: " << _nbCooks << " cook(s) per kitchen" << std::endl;
+    std::cout << "------------------------------------------------------" << std::endl;
+
+    for (std::size_t i = 0; i < _listKitchen.size(); i++)
+        _listKitchen[i]["write"] << "status";
+}
+
+void Reception::analyseOrder(std::string const &data)
+{
+    std::vector<std::string> commandString = strToWordArr(data, ';');
+    std::regex reg("[a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
+
+    try {
+        for (auto &i : commandString) {
+            if (i[0] == ' ')
+                i.erase(0, 1);
+            if (!regex_match(i, reg))
+                throw Error::Order("Invalid command. Format is: [a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
+        }
+        setOrders(commandString);
+    } catch (Error::Order const &e) {
+        std::cout << e.what() << std::endl;
+    }
+}
+
+
 void Reception::printDebug() const
 {
     std::cout << "Display list kitchen :" << std::endl;
-    for (auto i : _listKitchen) {
-        std::cout << i.begin()->first << std::endl;
-    }
+    // for (auto i : _listKitchen) {
+        // std::cout << i.begin()->first << std::endl;
+    // }
 }

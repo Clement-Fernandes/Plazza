@@ -7,8 +7,8 @@
 
 #include "Order.hpp"
 
-Order::Order(PizzaType const &type, PizzaSize const &size) :
-    _type(type), _size(size)
+Order::Order(std::size_t orderNb, PizzaType const &type, PizzaSize const &size) :
+    _orderNb(orderNb), _type(type), _size(size)
 {
 }
 
@@ -16,18 +16,24 @@ Order::~Order()
 {
 }
 
-PizzaType Order::getType(void) const
+std::size_t Order::getOrderNb() const
+{
+    return _orderNb;
+}
+
+PizzaType Order::getType() const
 {
     return _type;
 }
 
-PizzaSize Order::getSize(void) const
+PizzaSize Order::getSize() const
 {
     return _size;
 }
 
 Order &Order::operator =(Order const &order)
 {
+    _orderNb = order.getOrderNb();
     _type = order.getType();
     _size = order.getSize();
     return *this;

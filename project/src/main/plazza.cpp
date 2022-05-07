@@ -9,7 +9,7 @@
 #include "plazza.hpp"
 #include "Reception.hpp"
 
-static bool handleRequest(std::string const &data)
+static bool handleHelper(std::string const &data)
 {
     bool request = false;
     std::map<std::string, std::string> helper_list {
@@ -31,11 +31,12 @@ static bool handleRequest(std::string const &data)
     return request;
 }
 
-static bool stopPlazza(std::string const data)
+static bool stopPlazza(std::string const &data)
 {
-    if (std::cin.eof())
+    if (std::cin.eof()) {
+        std::cout << "exit" << std::endl;
         return true;
-    if (data.empty())
+    } if (data.empty())
         return false;
     if (data == "exit")
         return true;
@@ -48,27 +49,21 @@ int plazza(std::vector<std::string> const &av)
     std::string data;
     bool running = true;
 
-    std::cout << "\033[1;34mWelcome to the Plazza!\n\033[0m";
-    std::cout << "\033[1;36m> \033[0m";
+    std::cout << "\033[1;34mWelcome to the Plazza!\033[0m" << std::endl;
     while (running) {
+        std::cout << "\033[1;36m> \033[0m";
         std::getline(std::cin, data);
         if (stopPlazza(data)) {
             running = false;
             continue;
         }
-        if (handleRequest(data))
+        if (handleHelper(data))
             continue;
         if (data == "status") {
-            std::cout << "\033[1;34mStatus of Plazza\033[0m" << std::endl;
-            std::cout << "Orders placed: " << "?" << " order(s)" << std::endl;
-            std::cout <<"Cooks: " << std::stoi(av[2]) << " cook(s) per kitchen" << std::endl;
-            std::cout << "------------------------------------------------------" << std::endl;
             reception.displayStatus();
         }
         else
             reception.analyseOrder(data);
-        std::cout << "\033[1;36m> \033[0m";
     }
-    reception.closeKitchen();
-    return EXIT_SUCCESS;
+    return SUCCESS_EXIT;
 }

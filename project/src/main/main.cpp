@@ -46,14 +46,14 @@ static bool check_args(char const * const *av)
 int main(int ac, char const * const *av)
 {
     if (catchHelper(std::vector<std::string> (av, av + ac))) {
-        return (0);
+        return SUCCESS_EXIT;
     } else if (ac == 4) {
         if (!check_args(av))
-            return (84);
+            return ERROR_EXIT;
         plazza(std::vector<std::string> (av, av + ac));
     } else {
         displayFile("conf/helper.conf", std::cerr);
-        return (84);
+        return ERROR_EXIT;
     }
-    return (0);
+    return SUCCESS_EXIT;
 }

@@ -8,6 +8,9 @@
 #ifndef PLAZZA_HPP_
     #define PLAZZA_HPP_
 
+    #define ERROR_EXIT 84
+    #define SUCCESS_EXIT 0
+
     #include <string>
     #include <vector>
 

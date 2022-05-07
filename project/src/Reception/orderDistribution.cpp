@@ -19,6 +19,7 @@ void Reception::addKitchen(std::size_t id)
         Kitchen kitchen(id, _cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception);
 
         kitchen.loop();
+        kitchen.~Kitchen();
         exit(0);
     } else {
         std::unordered_map<std::string, IPC> info;
@@ -34,22 +35,20 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
     std::size_t kitchenId;
     std::string response;
 
-    for (auto i = orderList.begin(); i != orderList.end(); kitchenId++) {
+    for (auto i = orderList.begin(); i != orderList.end();) {
         bool messageGot = false;
 
-        for (kitchenId = 0; kitchenId < _listKitchen.size(); kitchenId++) {
+        for (kitchenId = 0; kitchenId < _listKitchen.size() ; kitchenId++) {
             std::string pizza = std::to_string(i->getType()) + " " + std::to_string(i->getSize());
             bool readed = false;
 
             _listKitchen[kitchenId]["write"] << pizza;
-
             while (!readed) {
                 try {
                     _listKitchen[kitchenId]["read"] >> response;
                     readed = true;
-                    if (response == "y") {
+                    if (response.at(0) == 'y')
                         messageGot = true;
-                    }
                 } catch (Error::IPC const &) {}
             }
             if (messageGot == true)

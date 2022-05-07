@@ -66,5 +66,5 @@ void Cook::cookLife(PizzaType pizza, PizzaSize size)
 
 void Cook::cookPizza(Order const &order)
 {
-    std::cout << "type: " << order.getType() << ", size: " << order.getSize() << std::endl;
+    // std::cout << "type: " << order.getType() << ", size: " << order.getSize() << std::endl;
 }

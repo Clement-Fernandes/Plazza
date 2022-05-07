@@ -28,12 +28,15 @@ void IPC::operator <<(std::string const &message)
 
 void IPC::operator >>(std::string &message)
 {
-    char *mess = (char *)(void *)malloc(sizeof(char) * 2048);
+    char *mess = (char *)malloc(sizeof(char) * 16);
 
     if (!mess)
         throw Error::Error("malloc failed");
-    if (read(_com[Read], mess, 2047) == -1)
+    message.clear();
+    int value = read(_com[Read], mess, sizeof(mess));
+    if (value == -1)
         throw Error::IPC("Read: Failed to read");
-    message = mess;
+    for (int i = 0; i != value; i++)
+        message += mess[i];
     free(mess);
 }
