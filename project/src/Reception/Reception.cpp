@@ -22,7 +22,7 @@ Reception::~Reception()
     std::cout << "Destructor Reception" << std::endl;
     std::cout << _listKitchen.size() << std::endl;
     for (std::size_t i = 0; i < _listKitchen.size(); i++)
-        _listKitchen.at(i)["write"] << "exit";
+        *_listKitchen.at(i)["write"] << "exit";
 }
 
 std::size_t Reception::getNbCooks() const
@@ -48,7 +48,7 @@ void Reception::displayStatus()
     std::cout << "------------------------------------------------------" << std::endl;
 
     for (std::size_t i = 0; i < _listKitchen.size(); i++)
-        _listKitchen[i]["write"] << "status";
+        *_listKitchen[i]["write"] << "status";
 }
 
 void Reception::analyseOrder(std::string const &data)

@@ -10,8 +10,8 @@
 
 void Reception::addKitchen(std::size_t id)
 {
-    IPC comReception;
-    IPC comKitchen;
+    std::shared_ptr<IPC> comReception = std::make_shared<IPC>();
+    std::shared_ptr<IPC> comKitchen = std::make_shared<IPC>();;
     Process newProcess(1);
 
     _allProcesses.push_back(newProcess);
@@ -22,7 +22,7 @@ void Reception::addKitchen(std::size_t id)
         kitchen.~Kitchen();
         exit(0);
     } else {
-        std::unordered_map<std::string, IPC> info;
+        std::unordered_map<std::string, std::shared_ptr<IPC>> info;
 
         info["read"] = comKitchen;
         info["write"] = comReception;
@@ -42,10 +42,10 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
             std::string pizza = std::to_string(i->getType()) + " " + std::to_string(i->getSize());
             bool readed = false;
 
-            _listKitchen[kitchenId]["write"] << pizza;
+            *_listKitchen[kitchenId]["write"] << pizza;
             while (!readed) {
                 try {
-                    _listKitchen[kitchenId]["read"] >> response;
+                    *_listKitchen[kitchenId]["read"] >> response;
                     readed = true;
                     if (response.at(0) == 'y')
                         messageGot = true;

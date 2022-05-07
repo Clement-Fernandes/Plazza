@@ -28,7 +28,7 @@ void IPC::operator <<(std::string const &message)
 
 void IPC::operator >>(std::string &message)
 {
-    char *mess = (char *)malloc(sizeof(char) * 16);
+    char *mess = static_cast<char *>(malloc(sizeof(char) * 16));
 
     if (!mess)
         throw Error::Error("malloc failed");
