@@ -13,6 +13,7 @@
     #include <queue>
     #include "Order.hpp"
     #include "IPC.hpp"
+    #include "Clock.hpp"
     #include "Cook.hpp"
     #include "ThreadPool.hpp"
 
@@ -37,6 +38,9 @@ class Kitchen {
         std::size_t _nbCooks;
         int _ingredientTime;
 
+        /* Clock */
+        Clock _clock;
+
         /* IPC to communicate with the reception */
         std::shared_ptr<IPC> _writer;
         std::shared_ptr<IPC> _reader;
@@ -55,6 +59,9 @@ class Kitchen {
 
         /* Contain the list of order in the kitchen */
         std::queue<Order> _orderList;
+
+        /* Contain the list of queues of order List of each cook */
+        std::vector<std::queue<Order>> _orderCookList;
 
         ThreadPool _threadPool;
 

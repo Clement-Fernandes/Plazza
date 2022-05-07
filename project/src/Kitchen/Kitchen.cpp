@@ -18,6 +18,7 @@ _ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridg
     // std::cout << "Constructor Kitchen" << std::endl;
     _threadPool.start(nbCooks);
     _isRunning = true;
+    _clock.start();
 }
 
 Kitchen::~Kitchen()
@@ -52,7 +53,10 @@ void Kitchen::loop()
     }
 }
 
+// static void millisecondsToSecond()
+// second = millisecond / 1000;
+
 void Kitchen::displayStatus(void)
 {
-    std::cout << "Kitchen " << _id << std::endl;
+    std::cout << "Kitchen n°" << _id  << ": (running for " << (_clock.getElapsedTime() / 1000) << "s)" << std::endl;
 }
