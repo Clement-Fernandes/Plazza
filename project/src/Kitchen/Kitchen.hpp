@@ -18,7 +18,6 @@
 
 class Kitchen {
     public:
-        Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, IPC writer, IPC reader);
         Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader);
         ~Kitchen();
 
@@ -40,9 +39,7 @@ class Kitchen {
 
         /* IPC to communicate with the reception */
         std::shared_ptr<IPC> _writer;
-        // IPC _writer;
         std::shared_ptr<IPC> _reader;
-        // IPC _reader;
 
         /* message get in _reader */
         std::string _message;

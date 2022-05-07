@@ -77,7 +77,6 @@ class Reception {
         std::string _message;
         std::vector<Process> _allProcesses;
         std::vector<std::unordered_map<std::string, std::shared_ptr<IPC>>> _listKitchen;
-        // std::vector<std::unordered_map<std::string, IPC>> _listKitchen;
 };
 
 #endif /* !RECEPTION_HPP_ */

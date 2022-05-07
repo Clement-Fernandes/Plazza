@@ -8,9 +8,9 @@
 #include <queue>
 #include <unistd.h>
 #include "Error.hpp"
+#include "plazza.hpp"
 #include "Kitchen.hpp"
 
-// Kitchen::Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, IPC writer, IPC reader) :
 Kitchen::Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader) :
 _id(id), _cookingTime(cookingTime), _nbCooks(nbCooks),
 _ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridge(cookingTime))
@@ -23,7 +23,7 @@ _ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridg
 Kitchen::~Kitchen()
 {
     _threadPool.Stop();
-    std::cout << "Kitchen " << _id << " closed !" << std::endl;
+    std::cout << "Kitchen " << _id << " closed!" << std::endl;
 }
 
 void Kitchen::loop()
@@ -40,12 +40,12 @@ void Kitchen::loop()
         else if (_orderList.size() >= _nbCooks * 2)
             *_writer << "n";
         else {
-            std::string::size_type pos = _message.find(' ');
-            PizzaType type = static_cast<PizzaType>(std::stoi(_message.substr(0, pos)));
-            PizzaSize size = static_cast<PizzaSize>(std::stoi(_message.substr(pos + 1)));
+            std::vector<std::string> args = strToWordArr(_message, ' ');
+            size_t orderNb = std::stoi(args[0]);
+            PizzaType type = static_cast<PizzaType>(std::stoi(args[1]));
+            PizzaSize size = static_cast<PizzaSize>(std::stoi(args[2]));
 
-            //voir plus tard pour récupérer l'id de la commande
-            _orderList.push({0, type, size});
+            _orderList.push({orderNb, type, size});
             _threadPool.QueueJob(_orderList.front());//cookPizza,
             *_writer << "y";
         }

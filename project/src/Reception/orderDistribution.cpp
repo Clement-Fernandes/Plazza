@@ -39,7 +39,8 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
         bool messageGot = false;
 
         for (kitchenId = 0; kitchenId < _listKitchen.size() ; kitchenId++) {
-            std::string pizza = std::to_string(i->getType()) + " " + std::to_string(i->getSize());
+            std::string pizza = std::to_string(i->getOrderNb()) + " " + \
+            std::to_string(i->getType()) + " " + std::to_string(i->getSize());
             bool readed = false;
 
             *_listKitchen[kitchenId]["write"] << pizza;
