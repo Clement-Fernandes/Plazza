@@ -61,7 +61,7 @@ void Reception::analyseOrder(std::string const &data)
             if (i[0] == ' ')
                 i.erase(0, 1);
             if (!regex_match(i, reg))
-                throw Error::Order("Invalid command. Format is: [a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
+                throw Error::Order("Invalid command. Format is: [a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*", true);
         }
         setOrders(commandString);
     } catch (Error::Order const &e) {
