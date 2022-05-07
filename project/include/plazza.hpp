@@ -14,7 +14,16 @@
     #include <string>
     #include <vector>
 
+int plazza(std::vector<std::string> const &av);
+
+std::vector<std::string> strToWordArr(std::string const &_line, char delim);
+
+std::string readFile(std::string const &filename, std::string const &sep);
+void displayFile(std::string const &filename, std::ostream &stream);
+
+/* enum for color code */
 enum COLOR {
+    DEFAULT = 0,
     BLACK = 30,
     RED = 31,
     GREEN = 32,
@@ -25,13 +34,7 @@ enum COLOR {
     WHITE = 37
 };
 
-int plazza(std::vector<std::string> const &av);
-
-std::vector<std::string> strToWordArr(std::string const &_line, char delim);
-
-std::string readFile(std::string const &filename, std::string const &sep);
-void displayFile(std::string const &filename, std::ostream &stream);
-
-void printColored(std::string text, enum COLOR color, bool lineBreak = true);
+/* Print text with optionnal color or line break */
+void printText(std::string text, enum COLOR color = COLOR::DEFAULT, bool lineBreak = true);
 
 #endif /* !PLAZZA_HPP_ */

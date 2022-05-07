@@ -53,10 +53,7 @@ void Kitchen::loop()
     }
 }
 
-// static void millisecondsToSecond()
-// second = millisecond / 1000;
-
 void Kitchen::displayStatus(void)
 {
-    std::cout << "Kitchen n°" << _id  << ": (running for " << (_clock.getElapsedTime() / 1000) << "s)" << std::endl;
+    printText("Kitchen n°" + std::to_string(_id)  + ": (running for " + std::to_string(_clock.getElapsedTime() / 1000) + "s)");
 }

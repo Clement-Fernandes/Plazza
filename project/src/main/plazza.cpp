@@ -34,7 +34,7 @@ static bool handleHelper(std::string const &data)
 static bool stopPlazza(std::string const &data)
 {
     if (std::cin.eof()) {
-        std::cout << "exit" << std::endl;
+        printText("exit");
         return true;
     } if (data.empty())
         return false;
@@ -49,9 +49,9 @@ int plazza(std::vector<std::string> const &av)
     std::string data;
     bool running = true;
 
-    printColored("Welcome to the Plazza!", COLOR::BLUE);
+    printText("Welcome to the Plazza!", COLOR::BLUE);
     while (running) {
-        printColored("> ", COLOR::CYAN, false);
+        printText("> ", COLOR::CYAN, false);
         std::getline(std::cin, data);
         if (stopPlazza(data)) {
             running = false;

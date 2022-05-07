@@ -14,7 +14,7 @@
 
 Reception::Reception(float cookingTime, std::size_t nbCook, int ingredientTime) : _cookingTime(cookingTime), _nbCooks(nbCook), _ingredientTime(ingredientTime)
 {
-    std::cout << "Constructor Reception" << std::endl;
+    printText("Constructor Reception");
 }
 
 Reception::~Reception()
@@ -42,10 +42,10 @@ int Reception::getIngredientTime() const
 
 void Reception::displayStatus()
 {
-    std::cout << "\033[1;34mStatus of Plazza\033[0m" << std::endl;
-    std::cout << "Orders placed: " << _orderNb << " order(s)" << std::endl;
-    std::cout <<"Cooks: " << _nbCooks << " cook(s) per kitchen" << std::endl;
-    std::cout << "------------------------------------------------------" << std::endl;
+    printText("Status of Plazza", COLOR::BLUE);
+    printText("Orders placed: " + std::to_string(_orderNb) + " order(s)");
+    printText("Cooks: " + std::to_string(_nbCooks) + " cook(s) per kitchen");
+    printText("------------------------------------------------------");
 
     for (std::size_t i = 0; i < _listKitchen.size(); i++)
         *_listKitchen[i]["write"] << "status";
@@ -72,7 +72,7 @@ void Reception::analyseOrder(std::string const &data)
 
 void Reception::printDebug() const
 {
-    std::cout << "Display list kitchen :" << std::endl;
+    printText("Display list kitchen :");
     // for (auto i : _listKitchen) {
         // std::cout << i.begin()->first << std::endl;
     // }

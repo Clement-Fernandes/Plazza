@@ -10,7 +10,7 @@ MAIN_SOURCE		=	src/main/main.cpp					\
 SOURCE			=	src/library/strToWordArr.cpp		\
 					src/library/displayFile.cpp			\
 					src/library/readFile.cpp			\
-					src/library/printColored.cpp		\
+					src/library/printText.cpp			\
 					src/main/plazza.cpp					\
 					src/Reception/Reception.cpp			\
 					src/Reception/setOrder.cpp			\
