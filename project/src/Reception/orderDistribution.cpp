@@ -11,7 +11,7 @@
 void Reception::addKitchen(std::size_t id)
 {
     std::shared_ptr<IPC> comReception = std::make_shared<IPC>();
-    std::shared_ptr<IPC> comKitchen = std::make_shared<IPC>();;
+    std::shared_ptr<IPC> comKitchen = std::make_shared<IPC>();
     Process newProcess(1);
 
     _allProcesses.push_back(newProcess);

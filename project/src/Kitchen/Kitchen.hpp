@@ -24,6 +24,7 @@ class Kitchen {
 
         void loop();
         void displayStatus(void);
+        void refillIngredients();
 
     protected:
     private:
@@ -64,6 +65,10 @@ class Kitchen {
         std::vector<std::queue<Order>> _orderCookList;
 
         ThreadPool _threadPool;
+
+        /* Fridge */
+        std::thread fridgeThread;
+        std::mutex _mutexFridge;
 
 };
 

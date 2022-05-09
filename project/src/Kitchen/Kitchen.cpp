@@ -14,7 +14,7 @@
 
 Kitchen::Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader) :
 _id(id), _cookingTime(cookingTime), _nbCooks(nbCooks),
-_ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridge(cookingTime))
+_ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridge(ingredientTime))
 {
     // std::cout << "Constructor Kitchen" << std::endl;
     _threadPool.start(nbCooks);
@@ -28,10 +28,21 @@ Kitchen::~Kitchen()
     std::cout << "Kitchen " << _id << " closed!" << std::endl;
 }
 
+void Kitchen::refillIngredients()
+{
+    while (_isRunning) {
+        {
+            std::unique_lock<std::mutex> lock(_mutexFridge);
+            _fridge.refillIngredients();
+        }
+    }
+}
+
 void Kitchen::loop()
 {
     std::map<PizzaType, std::function<void ()>> bakeFunction;
 
+    fridgeThread = std::thread(&Kitchen::refillIngredients, this);
     while (_isRunning) {
         *_reader >> _message;
 

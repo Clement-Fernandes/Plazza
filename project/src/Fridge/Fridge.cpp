@@ -9,11 +9,12 @@
 #include "Clock.hpp"
 #include "Fridge.hpp"
 
-#define MAX_SIZE 5 // a remplacer par le replaceIngredientTime
+#define MAX_SIZE 5
 #define DEFAULT_TIME -1
 
-Fridge::Fridge(float cookingTime) : _cookingTime(cookingTime)
+Fridge::Fridge(int ingredientTime) : _ingredientTime(ingredientTime)
 {
+    _running = true;
     _allIngredients = {
         {Ingredients::DOE, MAX_SIZE},
         {Ingredients::TOMATOE, MAX_SIZE},
@@ -25,18 +26,8 @@ Fridge::Fridge(float cookingTime) : _cookingTime(cookingTime)
         {Ingredients::GOATCHEESE, MAX_SIZE},
         {Ingredients::CHIEFLOVE, MAX_SIZE}
     };
-    _timer = {
-        {Ingredients::DOE, {DEFAULT_TIME, DEFAULT_TIME}},
-        {Ingredients::TOMATOE, {DEFAULT_TIME, DEFAULT_TIME}},
-        {Ingredients::GRUYERE, {DEFAULT_TIME, DEFAULT_TIME}},
-        {Ingredients::HAM, {DEFAULT_TIME, DEFAULT_TIME}},
-        {Ingredients::MUSHROOMS, {DEFAULT_TIME, DEFAULT_TIME}},
-        {Ingredients::STEAK, {DEFAULT_TIME, DEFAULT_TIME}},
-        {Ingredients::EGGPLANT, {DEFAULT_TIME, DEFAULT_TIME}},
-        {Ingredients::GOATCHEESE, {DEFAULT_TIME, DEFAULT_TIME}},
-        {Ingredients::CHIEFLOVE, {DEFAULT_TIME, DEFAULT_TIME}}
-    };
-    _running = true;
+    _clock.start();
+
 }
 
 Fridge::~Fridge()
@@ -66,31 +57,23 @@ bool Fridge::hasIngredients(std::vector<Ingredients> const &ingredientsList)
     return true;
 }
 
-
 bool Fridge::checkRefill(long long int first, long long int second)
 {
-    if (second - first > _cookingTime)
+    if (second - first > _ingredientTime)
         return (true);
     return (false);
 }
 
 void Fridge::refillIngredients()
 {
-    Clock clock;
+    long long int time = _clock.getElapsedTime();
 
-    while (_running) {
-        for (auto i : _allIngredients)
-            if (i.second < MAX_SIZE && _timer.at(i.first).first != DEFAULT_TIME)
-                _timer.at(i.first).first = clock.getElapsedTime();
-        for (auto i : _timer)
-            if (i.second.first != DEFAULT_TIME) {
-                i.second.second = clock.getElapsedTime();
-                if (checkRefill(i.second.first, i.second.second)) {
-                    _allIngredients.at(i.first) += 1;
-                    _timer.at(i.first).first = DEFAULT_TIME;
-                    _timer.at(i.first).second = DEFAULT_TIME;
-                }
-            }
+    if (time > _ingredientTime) {
+        for (auto i: _allIngredients) {
+            if (i.second < 5)
+                i.second += 1;
+        }
+        _clock.restart();
     }
 }
 
