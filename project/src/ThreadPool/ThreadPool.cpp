@@ -8,6 +8,9 @@
 #include "Cook.hpp"
 #include "ThreadPool.hpp"
 
+std::mutex fridgeMutex;
+std::condition_variable fridgeconditionalVariable;
+
 ThreadPool::ThreadPool()
 {
 }
@@ -16,17 +19,17 @@ ThreadPool::~ThreadPool()
 {
 }
 
-void ThreadPool::start(std::size_t nbThread)
+void ThreadPool::start(std::size_t nbThread, std::shared_ptr<Fridge> fridge, float cookingTime)
 {
     _threadsList.resize(nbThread);
     for (uint32_t i = 0; i < nbThread; i++) {
-        _threadsList.at(i) = std::thread(&ThreadPool::ThreadLoop, this);
+        _threadsList.at(i) = std::thread(&ThreadPool::ThreadLoop, this, fridge, cookingTime);
     }
 }
 
-void ThreadPool::ThreadLoop() // Cook life
+void ThreadPool::ThreadLoop(std::shared_ptr<Fridge> fridge, float cookingTime) // Cook life
 {
-    Cook cook;
+    Cook cook(fridge, cookingTime);
 
     while (!_stop) {
         // std::function<void(Order const &)> job;

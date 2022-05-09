@@ -9,12 +9,15 @@
     #define COOK_HPP_
 
     #include <chrono>
+    #include <memory>
+    #include <mutex>
+    #include <condition_variable>
     #include "Fridge.hpp"
     #include "Order.hpp"
 
 class Cook {
     public:
-        Cook(Fridge &kitchenFridge, float cookingTime);
+        Cook(std::shared_ptr<Fridge> kitchenFridge, float cookingTime);
         Cook() {};
         ~Cook();
 
@@ -25,7 +28,7 @@ class Cook {
 
     protected:
     private:
-        Fridge _kitchenFridge;
+        std::shared_ptr<Fridge> _kitchenFridge;
         bool _active;
         int _inactiveTime;
         int _cookingTime;

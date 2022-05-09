@@ -10,8 +10,11 @@
 #include "Cook.hpp"
 
 #define MAX_QUEUE 2
+extern std::mutex fridgeMutex;
+extern std::condition_variable fridgeconditionalVariable;
 
-Cook::Cook(Fridge &kitchenFridge, float cookingTime) : _kitchenFridge(kitchenFridge), _cookingTime(cookingTime)
+Cook::Cook(std::shared_ptr<Fridge> kitchenFridge, float cookingTime)
+ : _kitchenFridge(kitchenFridge), _cookingTime(cookingTime)
 {
     std::cout << "Constructor Cook" << std::endl;
     _cookingPizza = 0;
@@ -54,7 +57,7 @@ void Cook::cookLife(PizzaType pizza, PizzaSize size)
         //(à faire) return (Pas de place disponible)
     checkActivity(); // check si le cuisinier est entrain de travailler
     _pizzaList.insert({{pizza, size}, false}); // stock la pizza dans le vecteur
-    if (!_kitchenFridge.getIngredients(_recipes.at(_pizzaList.begin()->first.first))); // demande au frigo s'il y a tout les ingredients de la première pizza dans le vecteur sont disponibles
+    if (!_kitchenFridge->getIngredients(_recipes.at(_pizzaList.begin()->first.first))); // demande au frigo s'il y a tout les ingredients de la première pizza dans le vecteur sont disponibles
         // (à faire) si reponse NEGATIVE, il refait un tour de boucle
     else
         _cookingPizza = getCookingTime(_pizzaList.begin()->first.first); // il va chercher le temps de cuisson de la pizza
@@ -66,5 +69,14 @@ void Cook::cookLife(PizzaType pizza, PizzaSize size)
 
 void Cook::cookPizza(Order const &order)
 {
-    // std::cout << "type: " << order.getType() << ", size: " << order.getSize() << std::endl;
+    std::cout << "type: " << order.getType() << ", size: " << order.getSize() << std::endl;
+    if (!_kitchenFridge->getIngredients({Ingredients::DOE})) {
+        {
+            std::unique_lock<std::mutex> lock(fridgeMutex);
+            fridgeconditionalVariable.wait(lock, [this] {
+                return _kitchenFridge->getIngredients({Ingredients::DOE});
+            });
+        }
+    }
+    _kitchenFridge->printDebug();
 }

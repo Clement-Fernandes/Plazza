@@ -17,7 +17,7 @@ _id(id), _cookingTime(cookingTime), _nbCooks(nbCooks),
 _ingredientTime(ingredientTime), _writer(writer), _reader(reader), _fridge(Fridge(cookingTime))
 {
     // std::cout << "Constructor Kitchen" << std::endl;
-    _threadPool.start(nbCooks);
+    _threadPool.start(nbCooks, std::make_shared<Fridge>(_fridge), _cookingTime);
     _isRunning = true;
     _clock.start();
 }
