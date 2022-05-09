@@ -61,11 +61,11 @@ void Reception::analyseOrder(std::string const &data)
             if (i[0] == ' ')
                 i.erase(0, 1);
             if (!regex_match(i, reg))
-                throw Error::Order("Invalid command. Format is: [a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*", true);
+                throw Error::Order("Invalid command. Format is: [a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
         }
         setOrders(commandString);
     } catch (Error::Order const &e) {
-        std::cout << e.what() << std::endl;
+        printText(e.what(), COLOR::RED);
     }
 }
 
@@ -73,7 +73,4 @@ void Reception::analyseOrder(std::string const &data)
 void Reception::printDebug() const
 {
     printText("Display list kitchen :");
-    // for (auto i : _listKitchen) {
-        // std::cout << i.begin()->first << std::endl;
-    // }
 }

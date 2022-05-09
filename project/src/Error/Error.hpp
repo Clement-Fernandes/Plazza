@@ -33,26 +33,26 @@ namespace Error {
 
     class File: public Error {
         public:
-            File(std::string const &message, bool colored = false) throw() : Error((colored) ? ("\033[1;31mFile: " + message + "\033[0m") : ("File: " + message)) {};
+            File(std::string const &message) throw() : Error("File: " + message) {};
             virtual ~File() throw() {};
     };
 
     class Order: public Error {
         public:
-            Order(std::string const &message, bool colored = false) throw() : Error((colored) ? ("\033[1;31mOrder: " + message + "\033[0m") : ("Order: " + message)) {};
+            Order(std::string const &message) throw() : Error("Order: " + message) {};
             virtual ~Order() throw() {};
     };
 
     class Fridge : public Error {
         public:
-            Fridge(std::string const &message, bool colored = false) throw() : Error((colored) ? ("\033[1;31mFridge: " + message + "\033[0m") : ("Fridge: " + message)) {};
+            Fridge(std::string const &message) throw() : Error("Fridge: " + message) {};
 
             virtual ~Fridge() throw() {};
     };
 
     class IPC : public Error {
         public:
-            IPC(std::string const &message, bool colored = false) throw() : Error((colored) ? ("\033[1;31mIPC: " + message + "\033[0m") : ("IPC: " + message)) {};
+            IPC(std::string const &message) throw() : Error("IPC: " + message) {};
 
             virtual ~IPC()  throw() {};
     };
