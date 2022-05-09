@@ -11,10 +11,11 @@
     #include <vector>
     #include <map>
     #include "enum.hpp"
+    #include "Clock.hpp"
 
 class Fridge {
     public:
-        Fridge(float cookingTime);
+        Fridge(int ingredientTime);
         Fridge() {};
         ~Fridge();
 
@@ -26,10 +27,12 @@ class Fridge {
     protected:
     private:
         bool hasIngredients(std::vector<Ingredients> const &ingredientsList);
-        float _cookingTime;
+        int _ingredientTime;
         bool _running;
         std::map<Ingredients, std::size_t> _allIngredients;
-        std::map<Ingredients, std::pair<long long int, long long int>> _timer;
+
+        /* Clock */
+        Clock _clock;
 };
 
 #endif /* !FRIDGE_HPP_ */
