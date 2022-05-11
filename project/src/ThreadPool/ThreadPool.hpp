@@ -22,21 +22,21 @@ class ThreadPool {
         ~ThreadPool();
 
         void start(std::size_t nbThread, std::shared_ptr<Fridge> Fridge, float cookingTime);
-        void QueueJob(Order const &order);//std::function<void(Order const &)> const &job, 
+        void QueueJob(Order const &order);
         void Stop();
 
     private:
-        void ThreadLoop(std::shared_ptr<Fridge> fridge, float cookingTime);
+        void threadLoop(std::shared_ptr<Fridge> fridge, float cookingTime);
 
         bool _stop = false;
         std::mutex _mutexQueue;
         std::condition_variable _mutexCondition;
-        std::mutex _mutexFridge;
-        std::condition_variable _fridgeCondition;
 
         std::vector<std::thread> _threadsList;
-        // std::queue<std::function<void(Order const &)>> _jobs;
+        std::shared_ptr<Fridge> _fridge;
+
         std::queue<Order> _order;
+        std::vector<Ingredients> _ing;
     protected:
     private:
 };

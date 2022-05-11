@@ -13,16 +13,21 @@
     #include "enum.hpp"
     #include "Clock.hpp"
 
+#include <iostream>
+
 class Fridge {
     public:
         Fridge(int ingredientTime);
-        Fridge() {};
+        Fridge() {
+            std::cout << "construct fridge with end" << std::endl;
+        };
         ~Fridge();
 
         bool getIngredients(std::vector<Ingredients> const &ingredientsList);
         void printDebug() const;
-        void refillIngredients();
+        bool refillIngredients();
         bool checkRefill(long long int first, long long int second);
+        void printStatus() const;
 
     protected:
     private:

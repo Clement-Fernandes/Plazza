@@ -36,6 +36,7 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
     std::string response;
 
     for (auto i = orderList.begin(); i != orderList.end();) {
+        std::cout << "i" << std::endl;
         bool messageGot = false;
 
         for (kitchenId = 0; kitchenId < _listKitchen.size() ; kitchenId++) {
@@ -44,9 +45,11 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
             bool readed = false;
 
             *_listKitchen[kitchenId]["write"] << pizza;
+            std::cout << "writed" << std::endl;
             while (!readed) {
                 try {
                     *_listKitchen[kitchenId]["read"] >> response;
+                    std::cout << "readed" << std::endl;
                     readed = true;
                     if (response.at(0) == 'y')
                         messageGot = true;

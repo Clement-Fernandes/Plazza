@@ -5,12 +5,17 @@
 ** Fridge
 */
 
+#include <mutex>
+#include <condition_variable>
 #include "Error.hpp"
 #include "Clock.hpp"
 #include "Fridge.hpp"
+#include "plazza.hpp"
 
 #define MAX_SIZE 5
-#define DEFAULT_TIME -1
+
+extern std::mutex fridgeMutex;
+extern std::condition_variable fridgeCondition;
 
 Fridge::Fridge(int ingredientTime) : _ingredientTime(ingredientTime)
 {
@@ -64,17 +69,26 @@ bool Fridge::checkRefill(long long int first, long long int second)
     return (false);
 }
 
-void Fridge::refillIngredients()
+bool Fridge::refillIngredients()
 {
     long long int time = _clock.getElapsedTime();
+    bool reffiled = false;
 
     if (time > _ingredientTime) {
         for (auto i: _allIngredients) {
-            if (i.second < 5)
-                i.second += 1;
+            std::unique_lock<std::mutex> lock(fridgeMutex);
+            {
+                if (i.second < MAX_SIZE) {
+                    _allIngredients.at(i.first) += 1;
+                    reffiled = true;
+                }
+            }
         }
         _clock.restart();
     }
+    if (reffiled)
+        fridgeCondition.notify_all();
+    return reffiled;
 }
 
 void Fridge::printDebug() const
@@ -85,4 +99,25 @@ void Fridge::printDebug() const
         std::cout << n << ": " << i.second << std::endl;
         n += 1;
     }
+}
+
+void Fridge::printStatus() const
+{
+    std::map<Ingredients, std::string> allIngredients {
+        {Ingredients::CHIEFLOVE, "Chief Love"},
+        {Ingredients::DOE, "Doe"},
+        {Ingredients::EGGPLANT, "Eggplant"},
+        {Ingredients::GOATCHEESE, "Goat Cheese"},
+        {Ingredients::GRUYERE, "Gruyere"},
+        {Ingredients::HAM, "Ham"},
+        {Ingredients::MUSHROOMS, "Mushrooms"},
+        {Ingredients::STEAK, "Steak"},
+        {Ingredients::TOMATOE, "Tomatoe"},
+
+    };
+
+    printText("---");
+    printText("Ingredients Stock:");
+    for (auto i: _allIngredients)
+        printText("- " + allIngredients.at(i.first) + ": " + std::to_string(i.second));
 }

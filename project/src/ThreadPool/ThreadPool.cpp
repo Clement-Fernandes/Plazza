@@ -7,9 +7,10 @@
 
 #include "Cook.hpp"
 #include "ThreadPool.hpp"
+#include "plazza.hpp"
 
-std::mutex fridgeMutex;
-std::condition_variable fridgeconditionalVariable;
+extern std::mutex fridgeMutex;
+extern std::condition_variable fridgeCondition;
 
 ThreadPool::ThreadPool()
 {
@@ -21,18 +22,20 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::start(std::size_t nbThread, std::shared_ptr<Fridge> fridge, float cookingTime)
 {
+    std::cout << "start" << std::endl;
     _threadsList.resize(nbThread);
     for (uint32_t i = 0; i < nbThread; i++) {
-        _threadsList.at(i) = std::thread(&ThreadPool::ThreadLoop, this, fridge, cookingTime);
+        _threadsList.at(i) = std::thread(&ThreadPool::threadLoop, this, fridge, cookingTime);
     }
+    printText("started");
 }
 
-void ThreadPool::ThreadLoop(std::shared_ptr<Fridge> fridge, float cookingTime) // Cook life
+void ThreadPool::threadLoop(std::shared_ptr<Fridge> fridge, float cookingTime)
 {
+    std::cout << "thread_loop"<< std::endl;
     Cook cook(fridge, cookingTime);
 
     while (!_stop) {
-        // std::function<void(Order const &)> job;
         Order order;
 
         {
@@ -42,24 +45,30 @@ void ThreadPool::ThreadLoop(std::shared_ptr<Fridge> fridge, float cookingTime) /
             });
             if (_stop)
                 return;
-            // job = _jobs.front();
-            // _jobs.pop();
             order = _order.front();
             _order.pop();
         }
-        cook.cookPizza(order);
-        // job(order);
+        _ing.clear();
+        _ing = cook.getPizzaIngredients(order);
+        if (!fridge->getIngredients(_ing)) {
+            std::cout << "empty" << std::endl;
+            {
+            std::unique_lock<std::mutex> lock(fridgeMutex);
+            fridgeCondition.wait(lock, [this] {
+                return _fridge->getIngredients(_ing);
+            });
+            }
+            std::cout << "not empty" << std::endl;
+        }
     }
 }
 
-void ThreadPool::QueueJob(Order const &order) //std::function<void(Order const &)> const &job, 
+void ThreadPool::QueueJob(Order const &order)
 {
     {
         std::unique_lock<std::mutex> lock(_mutexQueue);
-        // _jobs.push(job);
         _order.push(order);
     }
-
     _mutexCondition.notify_one();
 }
 

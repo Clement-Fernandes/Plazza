@@ -24,7 +24,7 @@ class Kitchen {
 
         void loop();
         void displayStatus(void);
-        void refillIngredients();
+        void refillIngredients(std::shared_ptr<Fridge> fridge);
 
     protected:
     private:
@@ -53,10 +53,7 @@ class Kitchen {
         std::vector<Cook> _cooks;
 
         /* Contain all ingredients of the kitchen */
-        Fridge _fridge;
-
-        /* list of cooks Thread */
-        // std::vector<std::map<Ingredients, size_t>> _ingredients;
+        std::shared_ptr<Fridge> _fridge;
 
         /* Contain the list of order in the kitchen */
         std::queue<Order> _orderList;
@@ -67,7 +64,7 @@ class Kitchen {
         ThreadPool _threadPool;
 
         /* Fridge */
-        std::thread fridgeThread;
+        std::thread _fridgeThread;
         std::mutex _mutexFridge;
 
 };

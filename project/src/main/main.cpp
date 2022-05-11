@@ -48,8 +48,10 @@ int main(int ac, char const * const *av)
     if (catchHelper(std::vector<std::string> (av, av + ac))) {
         return SUCCESS_EXIT;
     } else if (ac == 4) {
-        if (!check_args(av))
+        if (!check_args(av)) {
+            displayFile("conf/helper.conf", std::cerr);
             return ERROR_EXIT;
+        }
         plazza(std::vector<std::string> (av, av + ac));
     } else {
         displayFile("conf/helper.conf", std::cerr);

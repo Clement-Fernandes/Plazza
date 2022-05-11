@@ -22,9 +22,8 @@ class Cook {
         ~Cook();
 
         int getCookingTime(PizzaType pizza);
-        void cookLife(PizzaType pizza, PizzaSize size);
         void checkActivity(void);
-        void cookPizza(Order const &order);
+        std::vector<Ingredients> getPizzaIngredients(Order const &order) const;
 
     protected:
     private:
