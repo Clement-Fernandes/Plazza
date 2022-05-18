@@ -20,8 +20,9 @@ ThreadPool::~ThreadPool()
 {
 }
 
-void ThreadPool::start(std::size_t nbThread, std::shared_ptr<Fridge> fridge, float cookingTime)
+void ThreadPool::start(std::size_t nbThread, std::shared_ptr<Fridge> fridge, float cookingTime, std::shared_ptr<Log> log)
 {
+    _log = log;
     std::cout << "start" << std::endl;
     _threadsList.resize(nbThread);
     for (uint32_t i = 0; i < nbThread; i++) {

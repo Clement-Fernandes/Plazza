@@ -19,7 +19,7 @@
 
 class Kitchen {
     public:
-        Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader);
+        Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader, std::shared_ptr<Log> log);
         ~Kitchen();
 
         void loop();
@@ -30,6 +30,7 @@ class Kitchen {
     private:
         /* id is to status && log datas */
         std::size_t _id;
+        std::shared_ptr<Log> _log;
 
         /* specify when the kitchen need to close */
         bool _isRunning;

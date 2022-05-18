@@ -12,6 +12,7 @@
     #include <map>
     #include "enum.hpp"
     #include "Clock.hpp"
+    #include "Log.hpp"
 
 #include <iostream>
 

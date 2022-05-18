@@ -15,6 +15,7 @@
     #include "Error.hpp"
     #include "Kitchen.hpp"
     #include "Process.hpp"
+    #include "Log.hpp"
 
 class Reception {
     public:
@@ -73,6 +74,7 @@ class Reception {
         std::size_t _orderNb = 0;
         std::map<int, std::vector<Order>> _orders;
 
+        std::shared_ptr<Log> _log;
 
         std::string _message;
         std::vector<Process> _allProcesses;

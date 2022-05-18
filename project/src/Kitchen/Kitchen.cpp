@@ -15,16 +15,17 @@
 std::mutex fridgeMutex;
 std::condition_variable fridgeCondition;
 
-Kitchen::Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader) :
-_id(id), _cookingTime(cookingTime), _nbCooks(nbCooks),
+Kitchen::Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader, std::shared_ptr<Log> log) :
+_id(id), _log(log), _cookingTime(cookingTime), _nbCooks(nbCooks),
 _ingredientTime(ingredientTime), _writer(writer), _reader(reader),
 _fridge(std::make_shared<Fridge>(Fridge(ingredientTime)))
 {
     std::cout << "Constructor Kitchen" << std::endl;
     _fridgeThread = std::thread(&Kitchen::refillIngredients, this, _fridge);
-    _threadPool.start(nbCooks, _fridge, _cookingTime);
+    _threadPool.start(nbCooks, _fridge, _cookingTime, _log);
     _isRunning = true;
     _clock.start();
+    *_log << "kitchen " + std::to_string(_id) + " have been opened";
     std::cout << "constructed" << std::endl;
 }
 
@@ -32,6 +33,7 @@ Kitchen::~Kitchen()
 {
     _threadPool.Stop();
     std::cout << "Kitchen " << _id << " closed!" << std::endl;
+    *_log << "kitchen " + std::to_string(_id) + " have been closed";
 }
 
 void Kitchen::refillIngredients(std::shared_ptr<Fridge> fridge)
@@ -51,7 +53,6 @@ void Kitchen::loop()
 
     while (_isRunning) {
         *_reader >> _message;
-        std::cout << "message" << _message << std::endl;
 
         if (_message.compare("exit") == 0)
             _isRunning = false;
@@ -60,7 +61,6 @@ void Kitchen::loop()
         else if (_orderList.size() >= _nbCooks * 2)
             *_writer << "n";
         else {
-            printText("yes");
             std::vector<std::string> args = strToWordArr(_message, ' ');
             size_t orderNb = std::stoi(args[0]);
             PizzaType type = static_cast<PizzaType>(std::stoi(args[1]));
@@ -71,7 +71,6 @@ void Kitchen::loop()
             _orderList.pop();
             *_writer << "y";
         }
-        std::cout << "sortie" << std::endl;
     }
 }
 

@@ -56,6 +56,13 @@ namespace Error {
 
             virtual ~IPC()  throw() {};
     };
+
+    class Log : public Error {
+        public:
+            Log(std::string const &message) throw() : Error("Log: " + message) {};
+
+            virtual ~Log()  throw() {};
+    };
 }
 
 #endif /* !ERROR_HPP_ */

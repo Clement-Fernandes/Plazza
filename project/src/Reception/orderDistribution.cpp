@@ -16,7 +16,7 @@ void Reception::addKitchen(std::size_t id)
 
     _allProcesses.push_back(newProcess);
     if (newProcess.getPid() == 0) {
-        Kitchen kitchen(id, _cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception);
+        Kitchen kitchen(id, _cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception, _log);
 
         kitchen.loop();
         kitchen.~Kitchen();
@@ -36,7 +36,6 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
     std::string response;
 
     for (auto i = orderList.begin(); i != orderList.end();) {
-        std::cout << "i" << std::endl;
         bool messageGot = false;
 
         for (kitchenId = 0; kitchenId < _listKitchen.size() ; kitchenId++) {
@@ -45,11 +44,11 @@ void Reception::orderDistribution(std::vector<Order> const &orderList)
             bool readed = false;
 
             *_listKitchen[kitchenId]["write"] << pizza;
-            std::cout << "writed" << std::endl;
+            *_log << "Reception asked to kitchen " + std::to_string(kitchenId) + " if she cans take an order";
             while (!readed) {
                 try {
                     *_listKitchen[kitchenId]["read"] >> response;
-                    std::cout << "readed" << std::endl;
+                    *_log << "She replied: " + response;
                     readed = true;
                     if (response.at(0) == 'y')
                         messageGot = true;
