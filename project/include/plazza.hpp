@@ -35,6 +35,6 @@ enum COLOR {
 };
 
 /* Print text with optionnal color or line break */
-void printText(std::string text, enum COLOR color = COLOR::DEFAULT, bool lineBreak = true);
+void printText(std::string const &text, enum COLOR color = COLOR::DEFAULT, bool lineBreak = true);
 
 #endif /* !PLAZZA_HPP_ */
