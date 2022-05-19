@@ -9,22 +9,24 @@
 #include "plazza.hpp"
 #include "Reception.hpp"
 
-static bool handleHelper(std::string const &data)
+#include <iostream>
+
+static bool handleHelp(std::string const &data)
 {
     bool request = false;
     std::map<std::string, std::string> helper_list {
         {"-h", "conf/runtimeHelper.conf"},
-        {"--helper", "conf/runtimeHelper.conf"},
+        {"--help", "conf/runtimeHelper.conf"},
         {"--size", "conf/size.conf"},
         {"--type", "conf/pizza.conf"}
     };
     std::vector<std::string> datas = strToWordArr(data, ' ');
 
-    for (auto &i : helper_list) {
-        if (std::find(datas.begin(), datas.end(), i.first) != datas.end()) {
+    for (auto &[option, file] : helper_list) {
+        if (std::find(datas.begin(), datas.end(), option) != datas.end()) {
             if (request)
                 std::cout << std::endl;
-            displayFile(i.second, std::cout);
+            displayFile(file, std::cout);
             request = true;
         }
     }
@@ -45,7 +47,8 @@ static bool stopPlazza(std::string const &data)
 
 int plazza(std::vector<std::string> const &av)
 {
-    Reception reception(std::stof(av[1]), std::stoi(av[2]), std::stoi(av[3]));
+    std::shared_ptr<Log> log = std::make_shared<Log>();
+    Reception reception(std::stof(av[1]), std::stoi(av[2]), std::stoi(av[3]), log);
     std::string data;
     bool running = true;
 
@@ -54,14 +57,12 @@ int plazza(std::vector<std::string> const &av)
         printText("> ", COLOR::CYAN, false);
         std::getline(std::cin, data);
         if (stopPlazza(data)) {
+            *log << "Client asked Plazza to 'exit'";
             running = false;
-            continue;
-        }
-        if (handleHelper(data))
-            continue;
-        if (data == "status") {
+        } else if (handleHelp(data))
+            *log << "Client asked 'help'";
+        else if (data == "status")
             reception.displayStatus();
-        }
         else
             reception.analyseOrder(data);
     }

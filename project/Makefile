@@ -48,7 +48,7 @@ INCLUDE_DIRS	+=	-I src/Log/
 
 CXXFLAGS		+=	-W -Wall -Wextra
 CXXFLAGS		+=	$(INCLUDE_DIRS)
-CXXFLAGS		+=	-std=c++2a
+CXXFLAGS		+=	-std=c++17
 
 LDFLAGS			+=	-lpthread
 

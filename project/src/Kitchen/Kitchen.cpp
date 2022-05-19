@@ -5,77 +5,69 @@
 ** Kitchen
 */
 
-#include <queue>
-#include <iomanip>
-#include <unistd.h>
-#include "Error.hpp"
 #include "plazza.hpp"
 #include "Kitchen.hpp"
 
-std::mutex fridgeMutex;
-std::condition_variable fridgeCondition;
-
-Kitchen::Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader, std::shared_ptr<Log> log) :
-_id(id), _log(log), _cookingTime(cookingTime), _nbCooks(nbCooks),
-_ingredientTime(ingredientTime), _writer(writer), _reader(reader),
-_fridge(std::make_shared<Fridge>(Fridge(ingredientTime)))
+Kitchen::Kitchen(std::size_t id, std::shared_ptr<Log> log, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader) :
+ _id(id), _log(log), _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime),
+ _writer(writer), _reader(reader), _isRunning(true),
+_fridge(std::make_shared<Fridge>(ingredientTime)), _threadPool(_log, _nbCooks, _cookingTime, _fridge)
 {
-    std::cout << "Constructor Kitchen" << std::endl;
-    _fridgeThread = std::thread(&Kitchen::refillIngredients, this, _fridge);
-    _threadPool.start(nbCooks, _fridge, _cookingTime, _log);
-    _isRunning = true;
     _clock.start();
-    *_log << "kitchen " + std::to_string(_id) + " have been opened";
-    std::cout << "constructed" << std::endl;
+    *_log << "Kitchen " + std::to_string(_id) + " opened";
+    // _fridgeThread = std::thread(&Kitchen::refillIngredients, this, _fridge);
 }
 
 Kitchen::~Kitchen()
 {
-    _threadPool.Stop();
-    std::cout << "Kitchen " << _id << " closed!" << std::endl;
-    *_log << "kitchen " + std::to_string(_id) + " have been closed";
+    _threadPool.stop();
+    *_log << "Kitchen " + std::to_string(_id) + " closed";
 }
 
-void Kitchen::refillIngredients(std::shared_ptr<Fridge> fridge)
+/*void Kitchen::refillIngredients(std::shared_ptr<Fridge> fridge)
 {
-    std::cout << "fridge" << std::endl;
     while (_isRunning) {
         {
             if (fridge->refillIngredients())
-                fridgeCondition.notify_all();
+                fridge->condition.notify_all();
         }
     }
-}
+}*/
 
-void Kitchen::loop()
+std::size_t Kitchen::loop()
 {
-    std::map<PizzaType, std::function<void ()>> bakeFunction;
+    std::string message;
 
     while (_isRunning) {
-        *_reader >> _message;
-
-        if (_message.compare("exit") == 0)
+        message.clear();
+        *_reader >> message;
+        if (message.compare("exit") == 0)
             _isRunning = false;
-        else if (_message.compare("status") == 0)
+        else if (message.compare("status") == 0) {
             displayStatus();
-        else if (_orderList.size() >= _nbCooks * 2)
+            *_writer << "finish";
+        } else if (_orderList.size() >= _nbCooks * 2) {
+            *_log << "Kitchen " + std::to_string(_id) + " refused the order";
             *_writer << "n";
-        else {
-            std::vector<std::string> args = strToWordArr(_message, ' ');
+        } else {
+            std::vector<std::string> args = strToWordArr(message, ' ');
             size_t orderNb = std::stoi(args[0]);
             PizzaType type = static_cast<PizzaType>(std::stoi(args[1]));
             PizzaSize size = static_cast<PizzaSize>(std::stoi(args[2]));
 
             _orderList.push({orderNb, type, size});
-            _threadPool.QueueJob(_orderList.front()); //cookPizza,
-            _orderList.pop();
+            *_log << "Kitchen " + std::to_string(_id) + " accepted the order";
             *_writer << "y";
+            _threadPool.queueJob(_orderList.front());
+            _orderList.pop();
         }
     }
+    return _id;
 }
 
 void Kitchen::displayStatus(void)
 {
+    *_log << "Status of kitchen " + std::to_string(_id);
     printText("Kitchen n°" + std::to_string(_id)  + ": (running for " + std::to_string(_clock.getElapsedTime(true)) + "s)");
     _fridge->printStatus();
 }

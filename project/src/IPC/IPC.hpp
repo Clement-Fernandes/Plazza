@@ -9,7 +9,6 @@
     #define IPC_HPP_
 
     #include <string>
-    #include <ostream>
 
 class IPC {
     public:

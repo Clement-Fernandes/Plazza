@@ -5,22 +5,14 @@
 ** Fridge
 */
 
-#include <mutex>
-#include <condition_variable>
 #include "Error.hpp"
-#include "Clock.hpp"
-#include "Fridge.hpp"
 #include "plazza.hpp"
+#include "Fridge.hpp"
 
 #define MAX_SIZE 5
 
-extern std::mutex fridgeMutex;
-extern std::condition_variable fridgeCondition;
-
-Fridge::Fridge(int ingredientTime) : _ingredientTime(ingredientTime)
-{
-    _running = true;
-    _allIngredients = {
+Fridge::Fridge(int ingredientTime) : _ingredientTime(ingredientTime),
+_allIngredients ({
         {Ingredients::DOE, MAX_SIZE},
         {Ingredients::TOMATOE, MAX_SIZE},
         {Ingredients::GRUYERE, MAX_SIZE},
@@ -30,9 +22,8 @@ Fridge::Fridge(int ingredientTime) : _ingredientTime(ingredientTime)
         {Ingredients::EGGPLANT, MAX_SIZE},
         {Ingredients::GOATCHEESE, MAX_SIZE},
         {Ingredients::CHIEFLOVE, MAX_SIZE}
-    };
-    _clock.start();
-
+    })
+{
 }
 
 Fridge::~Fridge()
@@ -62,44 +53,44 @@ bool Fridge::hasIngredients(std::vector<Ingredients> const &ingredientsList)
     return true;
 }
 
-bool Fridge::checkRefill(long long int first, long long int second)
-{
-    if (second - first > _ingredientTime)
-        return (true);
-    return (false);
-}
+// bool Fridge::checkRefill(long long int first, long long int second)
+// {
+//     if (second - first > _ingredientTime)
+//         return (true);
+//     return (false);
+// }
 
-bool Fridge::refillIngredients()
-{
-    long long int time = _clock.getElapsedTime();
-    bool reffiled = false;
+// bool Fridge::refillIngredients()
+// {
+//     long long int time = _clock.getElapsedTime();
+//     bool reffiled = false;
 
-    if (time > _ingredientTime) {
-        for (auto i: _allIngredients) {
-            std::unique_lock<std::mutex> lock(fridgeMutex);
-            {
-                if (i.second < MAX_SIZE) {
-                    _allIngredients.at(i.first) += 1;
-                    reffiled = true;
-                }
-            }
-        }
-        _clock.restart();
-    }
-    if (reffiled)
-        fridgeCondition.notify_all();
-    return reffiled;
-}
+//     if (time > _ingredientTime) {
+//         for (auto i: _allIngredients) {
+//             std::unique_lock<std::mutex> lock(mutex);
+//             {
+//                 if (i.second < MAX_SIZE) {
+//                     _allIngredients.at(i.first) += 1;
+//                     reffiled = true;
+//                 }
+//             }
+//         }
+//         _clock.restart();
+//     }
+//     if (reffiled)
+//         condition.notify_all();
+//     return reffiled;
+// }
 
-void Fridge::printDebug() const
-{
-    int n = 0;
+// void Fridge::printDebug() const
+// {
+//     int n = 0;
 
-    for (auto i : _allIngredients) {
-        std::cout << n << ": " << i.second << std::endl;
-        n += 1;
-    }
-}
+//     for (auto i : _allIngredients) {
+//         std::cout << n << ": " << i.second << std::endl;
+//         n += 1;
+//     }
+// }
 
 void Fridge::printStatus() const
 {
@@ -118,6 +109,6 @@ void Fridge::printStatus() const
 
     printText("---");
     printText("Ingredients Stock:");
-    for (auto i: _allIngredients)
-        printText("- " + allIngredients.at(i.first) + ": " + std::to_string(i.second));
+    for (auto ingredient: _allIngredients)
+        printText("- " + allIngredients.at(ingredient.first) + ": " + std::to_string(ingredient.second));
 }

@@ -6,27 +6,22 @@
 */
 
 #include <regex>
-#include <sys/types.h>
-#include <unistd.h>
-#include "plazza.hpp"
 #include "Error.hpp"
+#include "plazza.hpp"
 #include "Reception.hpp"
 
-Reception::Reception(float cookingTime, std::size_t nbCook, int ingredientTime) :
-_cookingTime(cookingTime), _nbCooks(nbCook), _ingredientTime(ingredientTime), _log(std::make_shared<Log>())
+
+Reception::Reception(float cookingTime, std::size_t nbCook, int ingredientTime, std::shared_ptr<Log> log) :
+_cookingTime(cookingTime), _nbCooks(nbCook), _ingredientTime(ingredientTime), _log(log), _kitchenIndex(0)
 {
-    printText("Constructor Reception");
-    *_log << "Reception Opens";
+    *_log << "Reception Opened";
 }
 
 Reception::~Reception()
 {
-    *_log << "Client asked for: exit";
-    std::cout << "Destructor Reception" << std::endl;
-    std::cout << _listKitchen.size() << std::endl;
-    for (std::size_t i = 0; i != _listKitchen.size(); i++)
-        *_listKitchen[i]["write"] << "exit";
-    *_log << "Reception Closes";
+    for (auto kitchenCom = _kitchenCom.begin(); kitchenCom != _kitchenCom.end(); kitchenCom++)
+        *kitchenCom->second[Chanel::Write] << "exit";
+    *_log << "Reception Closed";
 }
 
 std::size_t Reception::getNbCooks() const
@@ -44,16 +39,20 @@ int Reception::getIngredientTime() const
     return _ingredientTime;
 }
 
-void Reception::displayStatus()
+void Reception::displayStatus() const
 {
-    *_log << "Client asked for: status";
-    printText("Status of Plazza", COLOR::BLUE);
-    printText("Orders placed: " + std::to_string(_orderNb) + " order(s)");
-    printText("Cooks: " + std::to_string(_nbCooks) + " cook(s) per kitchen");
-    printText("------------------------------------------------------");
+    std::string buffer;
+    *_log << "Client asked the 'status'";
+    // printText("Status of Plazza", COLOR::BLUE);
+    // printText("Orders placed: " + std::to_string(_orderNb) + " order(s)");
+    // printText("Cooks: " + std::to_string(_nbCooks) + " cook(s) per kitchen");
+    // printText("------------------------------------------------------");
 
-    for (std::size_t i = 0; i != _listKitchen.size(); i++)
-        *_listKitchen[i]["write"] << "status";
+
+    for (auto kitchenCom = _kitchenCom.begin(); kitchenCom != _kitchenCom.end(); kitchenCom++) {
+        *kitchenCom->second.at(Chanel::Write) << "status";
+        *kitchenCom->second.at(Chanel::Read) >> buffer;
+    }
 }
 
 void Reception::analyseOrder(std::string const &data)
@@ -61,22 +60,20 @@ void Reception::analyseOrder(std::string const &data)
     std::vector<std::string> commandString = strToWordArr(data, ';');
     std::regex reg("[a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
 
-    *_log << "Client asked for: " + data;
+    *_log << "The client has ordered '" + data + "'";
     try {
         for (auto &i : commandString) {
             if (i[0] == ' ')
                 i.erase(0, 1);
-            if (!regex_match(i, reg))
+            if (!regex_match(i, reg)) {
+                *_log << "Command '" + i + "' is invalid";
                 throw Error::Order("Invalid command. Format is: [a-zA-Z]+ (S|M|L|XL|XXL) x[1-9][0-9]*");
+            }
         }
-        setOrders(commandString);
     } catch (Error::Order const &e) {
         printText(e.what(), COLOR::RED);
-        *_log << "Command is invalid";
+        return;
     }
+    setOrders(commandString);
 }
 
-void Reception::printDebug() const
-{
-    printText("Display list kitchen :");
-}

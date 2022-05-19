@@ -9,50 +9,45 @@
     #define RECEPTION_HPP_
 
     #include <map>
-    #include <any>
+    #include <vector>
     #include <memory>
     #include <unordered_map>
-    #include "Error.hpp"
-    #include "Kitchen.hpp"
     #include "Process.hpp"
     #include "Log.hpp"
+    #include "IPC.hpp"
+    #include "Order.hpp"
 
 class Reception {
     public:
-        // Reception.cpp
-        Reception(float cookingTime, std::size_t nbCook, int ingredientTime);
+        /* Reception.cpp */
+        Reception(float cookingTime, std::size_t nbCook, int ingredientTime, std::shared_ptr<Log> log);
         ~Reception();
 
         std::size_t getNbCooks() const;
         float getCookingTime() const;
         int getIngredientTime() const;
 
-        void displayStatus();
+        void displayStatus() const;
 
         void analyseOrder(std::string const &data);
 
-        void printDebug() const;
-
-        // setOrder.cpp
-        void setOrders(std::vector<std::string> const &commands);
+        /* setOrder.cpp */
         PizzaType getType(std::string const &type) const;
         PizzaSize getSize(std::string const &str) const;
         std::size_t getNumber(std::string const &str) const;
+        void setOrders(std::vector<std::string> const &commands);
 
-        // orderDistribution.cpp
+        /* orderDistribution.cpp */
         void orderDistribution(std::vector<Order> const &orderList);
-        void addKitchen(std::size_t id);
-
-        enum Com {
-            Read = 0,
-            Write = 1
-        };
+        void addKitchen();
 
     protected:
     private:
         float _cookingTime;
         std::size_t _nbCooks;
         int _ingredientTime;
+
+        std::shared_ptr<Log> _log;
 
         /* All existing pizza type */
         std::map<std::string, PizzaType> _allType = {
@@ -61,6 +56,7 @@ class Reception {
             {"margarita", PizzaType::Margarita},
             {"regina", PizzaType::Regina},
         };
+
         /* All existing pizza size */
         std::map<std::string, PizzaSize> _allSize = {
             {"S", PizzaSize::S},
@@ -74,11 +70,12 @@ class Reception {
         std::size_t _orderNb = 0;
         std::map<int, std::vector<Order>> _orders;
 
-        std::shared_ptr<Log> _log;
-
-        std::string _message;
-        std::vector<Process> _allProcesses;
-        std::vector<std::unordered_map<std::string, std::shared_ptr<IPC>>> _listKitchen;
+        enum class Chanel {
+            Write,
+            Read
+        };
+        std::size_t _kitchenIndex;
+        std::map<std::size_t, std::unordered_map<Chanel, std::shared_ptr<IPC>>> _kitchenCom;
 };
 
 #endif /* !RECEPTION_HPP_ */

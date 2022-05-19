@@ -5,60 +5,61 @@
 ** orderDistribution
 */
 
-#include "Process.hpp"
+#include "Error.hpp"
+#include "Kitchen.hpp"
+#include "plazza.hpp"
 #include "Reception.hpp"
 
-void Reception::addKitchen(std::size_t id)
+void Reception::addKitchen()
 {
+    printText("new kitchen");
     std::shared_ptr<IPC> comReception = std::make_shared<IPC>();
     std::shared_ptr<IPC> comKitchen = std::make_shared<IPC>();
-    Process newProcess(1);
 
-    _allProcesses.push_back(newProcess);
+    std::unordered_map<Chanel, std::shared_ptr<IPC>> info;
+    info.insert({Chanel::Read, comKitchen});
+    info.insert({Chanel::Write, comReception});
+    _kitchenCom.insert({_kitchenIndex, info});
+
+    Process newProcess;
     if (newProcess.getPid() == 0) {
-        Kitchen kitchen(id, _cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception, _log);
-
-        kitchen.loop();
-        kitchen.~Kitchen();
+        std::size_t id;
+        {
+        Kitchen kitchen(_kitchenIndex, _log, _cookingTime, _nbCooks, _ingredientTime, comKitchen, comReception);
+        id = kitchen.loop();
+        }
+        _kitchenCom.erase(id);
         exit(0);
-    } else {
-        std::unordered_map<std::string, std::shared_ptr<IPC>> info;
-
-        info["read"] = comKitchen;
-        info["write"] = comReception;
-        _listKitchen.push_back(info);
     }
+    _kitchenIndex++;
 }
 
 void Reception::orderDistribution(std::vector<Order> const &orderList)
 {
-    std::size_t kitchenId;
-    std::string response;
 
     for (auto i = orderList.begin(); i != orderList.end();) {
-        bool messageGot = false;
+        std::string response;
+        bool orderAccepted = false;
 
-        for (kitchenId = 0; kitchenId < _listKitchen.size() ; kitchenId++) {
+        for (auto kitchenId = _kitchenCom.begin(); kitchenId != _kitchenCom.end(); kitchenId++) {
             std::string pizza = std::to_string(i->getOrderNb()) + " " + \
             std::to_string(i->getType()) + " " + std::to_string(i->getSize());
-            bool readed = false;
 
-            *_listKitchen[kitchenId]["write"] << pizza;
-            *_log << "Reception asked to kitchen " + std::to_string(kitchenId) + " if she cans take an order";
-            while (!readed) {
-                try {
-                    *_listKitchen[kitchenId]["read"] >> response;
-                    *_log << "She replied: " + response;
-                    readed = true;
-                    if (response.at(0) == 'y')
-                        messageGot = true;
-                } catch (Error::IPC const &) {}
-            }
-            if (messageGot == true)
+            *_log << "Reception asked to kitchen " + std::to_string(kitchenId->first) + " if she could take an order";
+            *kitchenId->second[Chanel::Write] << pizza;
+            try {
+                *kitchenId->second[Chanel::Read] >> response;
+                if (response.at(0) == 'y') {
+                    orderAccepted = true;
+                }
+            } catch (Error::IPC const &) {}
+            if (orderAccepted) {
+                printText("message accepted");
                 break;
+            }
         }
-        if (kitchenId == _listKitchen.size())
-            addKitchen(kitchenId);
+        if (!orderAccepted)
+            addKitchen();
         else
             i++;
     }

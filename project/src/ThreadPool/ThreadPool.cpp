@@ -6,81 +6,80 @@
 */
 
 #include "Cook.hpp"
-#include "ThreadPool.hpp"
 #include "plazza.hpp"
+#include "ThreadPool.hpp"
 
-extern std::mutex fridgeMutex;
-extern std::condition_variable fridgeCondition;
+#include <chrono>
 
-ThreadPool::ThreadPool()
+ThreadPool::ThreadPool(std::shared_ptr<Log> log, std::size_t nbThread, float cookingTime, std::shared_ptr<Fridge> fridge) :
+ _log(log), _nbThread(nbThread), _fridge(fridge), _stop(false), _inactiveCook(_nbThread)
 {
+    _threadsList.resize(_nbThread);
+    for (std::size_t i = 0; i < _nbThread; i++)
+        _threadsList.at(i) = std::thread(&ThreadPool::threadLoop, this, cookingTime, _fridge);
 }
 
 ThreadPool::~ThreadPool()
 {
 }
 
-void ThreadPool::start(std::size_t nbThread, std::shared_ptr<Fridge> fridge, float cookingTime, std::shared_ptr<Log> log)
+void ThreadPool::stop()
 {
-    _log = log;
-    std::cout << "start" << std::endl;
-    _threadsList.resize(nbThread);
-    for (uint32_t i = 0; i < nbThread; i++) {
-        _threadsList.at(i) = std::thread(&ThreadPool::threadLoop, this, fridge, cookingTime);
-    }
-    printText("started");
+    _stop = true;
+    _mutexCondition.notify_all();
+    for (auto &thread : _threadsList)
+        thread.join();
+
 }
 
-void ThreadPool::threadLoop(std::shared_ptr<Fridge> fridge, float cookingTime)
+void ThreadPool::threadLoop(float cookingTime, std::shared_ptr<Fridge> fridge)
 {
-    std::cout << "thread_loop"<< std::endl;
-    Cook cook(fridge, cookingTime);
+    Cook cook(cookingTime, fridge);
 
     while (!_stop) {
         Order order;
-
         {
             std::unique_lock<std::mutex> lock(_mutexQueue);
-            _mutexCondition.wait(lock, [this] {
-                return !_order.empty() || _stop;
-            });
+            _mutexCondition.wait(lock);
             if (_stop)
                 return;
+            _inactiveCook -= 1;
             order = _order.front();
             _order.pop();
         }
-        _ing.clear();
-        _ing = cook.getPizzaIngredients(order);
-        if (!fridge->getIngredients(_ing)) {
-            std::cout << "empty" << std::endl;
+        _ingredientList.clear();
+        _ingredientList = cook.getPizzaIngredients(order);
+        if (!_fridge->getIngredients(_ingredientList)) {
             {
-            std::unique_lock<std::mutex> lock(fridgeMutex);
-            fridgeCondition.wait(lock, [this] {
-                return _fridge->getIngredients(_ing);
+            std::unique_lock<std::mutex> lock(fridge->mutex);
+
+            _fridge->condition.wait(lock, [this] {
+                return _fridge->getIngredients(_ingredientList);
             });
             }
-            std::cout << "not empty" << std::endl;
+        }
+        std::chrono::milliseconds bakingTime(cook.getCookingTime(order));
+        std::this_thread::sleep_for(bakingTime);
+        {
+            std::unique_lock<std::mutex> lock(_mutexQueue);
+            _inactiveCook += 1;
+            notify();
         }
     }
 }
 
-void ThreadPool::QueueJob(Order const &order)
+void ThreadPool::notify()
+{
+    if (!_order.empty())
+      _mutexCondition.notify_one();
+}
+
+void ThreadPool::queueJob(Order const &order)
 {
     {
         std::unique_lock<std::mutex> lock(_mutexQueue);
         _order.push(order);
     }
-    _mutexCondition.notify_one();
-}
-
-void ThreadPool::Stop()
-{
-    {
-        std::unique_lock<std::mutex> lock(_mutexQueue);
-        _stop = true;
-    }
-    _mutexCondition.notify_all();
-    for (auto &thread : _threadsList)
-        thread.join();
-    _threadsList.clear();
+    if (_inactiveCook > 0)
+        _mutexCondition.notify_one();
 }

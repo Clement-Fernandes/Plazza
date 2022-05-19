@@ -5,9 +5,10 @@
 ** setOrder
 */
 
-#include "Error.hpp"
 #include "plazza.hpp"
+#include "Error.hpp"
 #include "Reception.hpp"
+
 
 PizzaType Reception::getType(std::string const &str) const
 {
@@ -51,7 +52,7 @@ void Reception::setOrders(std::vector<std::string> const &commands)
 {
     std::vector<Order> orderList;
 
-    _orderNb++;
+    *_log << "Order set on number " + std::to_string(_orderNb);
     for (auto &i : commands) {
         std::vector<std::string> orderStr = strToWordArr(i, ' ');
         PizzaType type = getType(orderStr.at(0));
@@ -63,4 +64,5 @@ void Reception::setOrders(std::vector<std::string> const &commands)
     }
     _orders.insert({_orderNb, orderList});
     orderDistribution(orderList);
+    _orderNb++;
 }

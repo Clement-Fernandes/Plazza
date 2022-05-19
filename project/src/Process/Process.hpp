@@ -13,7 +13,6 @@
 class Process {
     public:
         Process();
-        Process(int);
         ~Process();
 
         pid_t getPid() const;

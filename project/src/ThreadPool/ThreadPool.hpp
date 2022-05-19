@@ -9,38 +9,43 @@
     #define THREADPOOL_HPP_
 
     #include <vector>
-    #include <functional>
-    #include <condition_variable>
     #include <thread>
-    #include <queue>
     #include <mutex>
+    #include <condition_variable>
+    #include <queue>
+    #include "Fridge.hpp"
     #include "Order.hpp"
+    #include "Log.hpp"
 
 class ThreadPool {
     public:
-        ThreadPool();
+        ThreadPool(std::shared_ptr<Log> log, std::size_t nbThread, float cookingTime, std::shared_ptr<Fridge> fridge);
         ~ThreadPool();
 
-        void start(std::size_t nbThread, std::shared_ptr<Fridge> Fridge, float cookingTime, std::shared_ptr<Log> log);
-        void QueueJob(Order const &order);
-        void Stop();
+        void stop();
 
+        void notify();
+        void queueJob(Order const &order);
+
+    protected:
     private:
-        void threadLoop(std::shared_ptr<Fridge> fridge, float cookingTime);
+        void threadLoop(float cookingTime, std::shared_ptr<Fridge> fridge);
 
         std::shared_ptr<Log> _log;
+        std::size_t _nbThread;
 
-        bool _stop = false;
+        std::shared_ptr<Fridge> _fridge;
+
+        bool _stop;
+        std::vector<std::thread> _threadsList;
+        std::size_t _inactiveCook;
+
         std::mutex _mutexQueue;
         std::condition_variable _mutexCondition;
 
-        std::vector<std::thread> _threadsList;
-        std::shared_ptr<Fridge> _fridge;
 
         std::queue<Order> _order;
-        std::vector<Ingredients> _ing;
-    protected:
-    private:
+        std::vector<Ingredients> _ingredientList;
 };
 
 #endif /* !THREADPOOL_HPP_ */

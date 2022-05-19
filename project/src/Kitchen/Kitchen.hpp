@@ -8,23 +8,24 @@
 #ifndef KITCHEN_HPP_
     #define KITCHEN_HPP_
 
-    #include <thread>
+    // #include <thread>
     #include <memory>
     #include <queue>
     #include "Order.hpp"
     #include "IPC.hpp"
     #include "Clock.hpp"
-    #include "Cook.hpp"
     #include "ThreadPool.hpp"
+    #include "Fridge.hpp"
+    #include "Log.hpp"
 
 class Kitchen {
     public:
-        Kitchen(std::size_t id, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader, std::shared_ptr<Log> log);
+        Kitchen(std::size_t id, std::shared_ptr<Log> log, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader);
         ~Kitchen();
 
-        void loop();
+        std::size_t loop();
         void displayStatus(void);
-        void refillIngredients(std::shared_ptr<Fridge> fridge);
+        // void refillIngredients(std::shared_ptr<Fridge> fridge);
 
     protected:
     private:
@@ -32,41 +33,36 @@ class Kitchen {
         std::size_t _id;
         std::shared_ptr<Log> _log;
 
-        /* specify when the kitchen need to close */
-        bool _isRunning;
-
         /* Basics argument (send at execute time) */
         float _cookingTime;
         std::size_t _nbCooks;
         int _ingredientTime;
 
-        /* Clock */
-        Clock _clock;
-
         /* IPC to communicate with the reception */
         std::shared_ptr<IPC> _writer;
         std::shared_ptr<IPC> _reader;
 
-        /* message get in _reader */
-        std::string _message;
+        /* specify when the kitchen need to close */
+        bool _isRunning;
 
-        /* Contain the list of cooks of the kitchen */
-        std::vector<Cook> _cooks;
-
-        /* Contain all ingredients of the kitchen */
-        std::shared_ptr<Fridge> _fridge;
+        /* Clock */
+        Clock _clock;
 
         /* Contain the list of order in the kitchen */
         std::queue<Order> _orderList;
 
-        /* Contain the list of queues of order List of each cook */
-        std::vector<std::queue<Order>> _orderCookList;
+        /* Fridge */
+        std::shared_ptr<Fridge> _fridge;
+        // std::thread _fridgeThread;
+        // std::mutex _mutexFridge;
 
+        /* ThreadPool containing all cooks */
         ThreadPool _threadPool;
 
-        /* Fridge */
-        std::thread _fridgeThread;
-        std::mutex _mutexFridge;
+        // /* Contain the list of queues of order List of each cook */
+        // std::vector<std::queue<Order>> _orderCookList;
+
+
 
 };
 

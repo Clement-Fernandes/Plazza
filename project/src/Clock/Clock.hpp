@@ -6,10 +6,10 @@
 */
 
 #ifndef CLOCK_HPP_
-#define CLOCK_HPP_
+    #define CLOCK_HPP_
 
-#include <chrono>
-#include <math.h>
+    #include <chrono>
+    #include <math.h>
 
 using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 

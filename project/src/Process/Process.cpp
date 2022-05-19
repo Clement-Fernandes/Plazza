@@ -10,20 +10,14 @@
 
 Process::Process()
 {
-}
-
-Process::Process(int)
-{
     _pid = fork();
 
     if (_pid < 0)
         throw Error::Error("fork failed!");
-    // std::cout << "Process constructor" << std::endl;
 }
 
 Process::~Process()
 {
-    // std::cout << "Process Destructor" << std::endl;
 }
 
 pid_t Process::getPid() const

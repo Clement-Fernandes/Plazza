@@ -5,30 +5,15 @@
 ** Cook
 */
 
-#include <iostream>
-#include "Clock.hpp"
 #include "Cook.hpp"
 
-#define MAX_QUEUE 2
-extern std::condition_variable fridgeConditionalVariable;
-
-Cook::Cook(std::shared_ptr<Fridge> kitchenFridge, float cookingTime)
- : _kitchenFridge(kitchenFridge), _cookingTime(cookingTime)
+Cook::Cook(float cookingTime, std::shared_ptr<Fridge> kitchenFridge)
+ : _cookingTime(cookingTime), _kitchenFridge(kitchenFridge)
 {
-    std::cout << "Constructor Cook" << std::endl;
-    _cookingPizza = 0;
-    _inactiveTime = 0;
-    _bakeTime = {
-        {PizzaType::Margarita, 1000},
-        {PizzaType::Regina, 2000},
-        {PizzaType::Americana, 2000},
-        {PizzaType::Fantasia, 4000}
-    };
 }
 
 Cook::~Cook()
 {
-    std::cout << "Destructor Cook" << std::endl;
 }
 
 std::vector<Ingredients> Cook::getPizzaIngredients(Order const &order) const
@@ -36,22 +21,7 @@ std::vector<Ingredients> Cook::getPizzaIngredients(Order const &order) const
     return _recipes.at(order.getType());
 }
 
-int Cook::getCookingTime(PizzaType pizza)
+int Cook::getCookingTime(Order const &order) const
 {
-    return (_bakeTime.at(pizza) * _cookingTime);
+    return _bakeTime.at(order.getType()) * _cookingTime;
 }
-
-void Cook::checkActivity(void)
-{
-    Clock clock;
-
-    if (_pizzaList.empty() || _cookingPizza > 0) {
-        _inactiveTime = clock.getElapsedTime();
-        if (_inactiveTime > 5)
-            _active = false;
-    } else {
-        _inactiveTime = 0;
-        _active = true;
-    }
-}
-

@@ -10,8 +10,6 @@
 
     #include <fstream>
 
-    #include "plazza.hpp"
-
 class Log {
     public:
         Log();

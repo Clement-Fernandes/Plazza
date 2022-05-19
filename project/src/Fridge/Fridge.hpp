@@ -11,34 +11,26 @@
     #include <vector>
     #include <map>
     #include "enum.hpp"
-    #include "Clock.hpp"
-    #include "Log.hpp"
 
-#include <iostream>
+    #include <condition_variable>
+    #include <mutex>
 
 class Fridge {
     public:
         Fridge(int ingredientTime);
-        Fridge() {
-            std::cout << "construct fridge with end" << std::endl;
-        };
         ~Fridge();
 
         bool getIngredients(std::vector<Ingredients> const &ingredientsList);
-        void printDebug() const;
-        bool refillIngredients();
-        bool checkRefill(long long int first, long long int second);
         void printStatus() const;
+
+        std::condition_variable condition;
+        std::mutex mutex;
 
     protected:
     private:
         bool hasIngredients(std::vector<Ingredients> const &ingredientsList);
         int _ingredientTime;
-        bool _running;
         std::map<Ingredients, std::size_t> _allIngredients;
-
-        /* Clock */
-        Clock _clock;
 };
 
 #endif /* !FRIDGE_HPP_ */

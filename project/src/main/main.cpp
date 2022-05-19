@@ -17,16 +17,16 @@ static bool catchHelper(std::vector<std::string> const &av)
     bool helper = false;
     std::map<std::string, std::string> helper_list {
         {"-h", "conf/helper.conf"},
-        {"--helper", "conf/helper.conf"},
+        {"--help", "conf/helper.conf"},
         {"--size", "conf/size.conf"},
         {"--type", "conf/pizza.conf"}
     };
 
-    for (auto i = helper_list.begin(); i != helper_list.end(); i++) {
-        if (std::find(av.begin(), av.end(), i->first) != av.end()) {
+    for (auto &[option, file] : helper_list) {//auto i = helper_list.begin(); i != helper_list.end(); i++) {
+        if (std::find(av.begin(), av.end(), option) != av.end()) {
             if (helper)
                 std::cout << std::endl;
-            displayFile(i->second, std::cout);
+            displayFile(file, std::cout);
             helper = true;
         }
     }
