@@ -11,8 +11,8 @@
 Kitchen::Kitchen(std::size_t id, std::shared_ptr<Log> log, float cookingTime, std::size_t nbCooks, int ingredientTime, std::shared_ptr<IPC> writer, std::shared_ptr<IPC> reader) :
  _id(id), _log(log), _cookingTime(cookingTime), _nbCooks(nbCooks), _ingredientTime(ingredientTime),
  _writer(writer), _reader(reader), _isRunning(true),
- _fridge(std::make_shared<Fridge>(ingredientTime)), _fridgeThread(&Kitchen::refillIngredients, this),
- _threadPool(_log, _nbCooks, _cookingTime, _fridge)
+ _fridge(std::make_shared<Fridge>(ingredientTime, _log, _id)), _fridgeThread(&Kitchen::refillIngredients, this),
+ _threadPool(_log, id, _nbCooks, _cookingTime, _fridge)
 {
     _clock.start();
     *_log << "Kitchen " + std::to_string(_id) + " opened";

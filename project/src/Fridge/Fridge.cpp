@@ -11,7 +11,8 @@
 
 #define MAX_SIZE 5
 
-Fridge::Fridge(int ingredientTime) : _ingredientTime(ingredientTime),
+Fridge::Fridge(int ingredientTime, std::shared_ptr<Log> log, std::size_t id) : _ingredientTime(ingredientTime),
+_log(log), _id(id),
 _allIngredients ({
         {Ingredients::DOE, MAX_SIZE},
         {Ingredients::TOMATOE, MAX_SIZE},
@@ -59,7 +60,7 @@ void Fridge::refillIngredients()
     long long int time = _clock.getElapsedTime();
 
     if (time > _ingredientTime) {
-        std::cout << "Refill ingredient" << std::endl;
+        *_log << "Fridge of kitchen " + std::to_string(_id) + " Refill his ingredients";
         std::unique_lock<std::mutex> lock(mutex);
             {
             for (auto i: _allIngredients) {

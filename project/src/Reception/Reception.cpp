@@ -42,16 +42,11 @@ int Reception::getIngredientTime() const
 void Reception::displayStatus() const
 {
     std::string buffer;
+
     *_log << "Client asked the 'status'";
     printText("Status of Plazza", COLOR::BLUE);
     printText("Orders placed: " + std::to_string(_orderNb) + " order(s)");
-    // printText("Cooks: " + std::to_string(_nbCooks) + " cook(s) per kitchen");
-    // printText("------------------------------------------------------");
-
-
-    std::cout << _kitchenCom.size() << std::endl;
     for (auto kitchenCom = _kitchenCom.begin(); kitchenCom != _kitchenCom.end(); kitchenCom++) {
-        std::cout << "in boucle" << std::endl;
         *kitchenCom->second.at(Chanel::Write) << "status";
         *kitchenCom->second.at(Chanel::Read) >> buffer;
     }

@@ -11,12 +11,12 @@
 
 #include <chrono>
 
-ThreadPool::ThreadPool(std::shared_ptr<Log> log, std::size_t nbThread, float cookingTime, std::shared_ptr<Fridge> fridge) :
- _log(log), _nbThread(nbThread), _fridge(fridge), _stop(false), _inactiveCook(_nbThread)
+ThreadPool::ThreadPool(std::shared_ptr<Log> log, std::size_t kitchenId, std::size_t nbThread, float cookingTime, std::shared_ptr<Fridge> fridge) :
+ _log(log), _kitchenId(kitchenId), _nbThread(nbThread), _fridge(fridge), _stop(false), _inactiveCook(_nbThread)
 {
     _threadsList.resize(_nbThread);
     for (std::size_t i = 0; i < _nbThread; i++)
-        _threadsList.at(i) = std::thread(&ThreadPool::threadLoop, this, cookingTime);
+        _threadsList.at(i) = std::thread(&ThreadPool::threadLoop, this, cookingTime, i);
 }
 
 ThreadPool::~ThreadPool()
@@ -32,7 +32,7 @@ void ThreadPool::stop()
 
 }
 
-void ThreadPool::threadLoop(float cookingTime)
+void ThreadPool::threadLoop(float cookingTime, std::size_t id)
 {
     Cook cook(cookingTime, _fridge);
 
@@ -45,6 +45,7 @@ void ThreadPool::threadLoop(float cookingTime)
                 return;
             _inactiveCook -= 1;
             order = _order.front();
+            *_log << "cook " + std::to_string(id) + " of kitchen " + std::to_string(_kitchenId) + " accepted order " + std::to_string(order.getOrderNb());
             _order.pop();
         }
         _ingredientList.clear();
@@ -60,6 +61,7 @@ void ThreadPool::threadLoop(float cookingTime)
         }
         std::chrono::milliseconds bakingTime(cook.getCookingTime(order));
         std::this_thread::sleep_for(bakingTime * cookingTime);
+        *_log << "cook " + std::to_string(id) + " of kitchen " + std::to_string(_kitchenId) + " finished to cook order " + std::to_string(order.getOrderNb());
         {
             std::unique_lock<std::mutex> lock(_mutexQueue);
             _inactiveCook += 1;

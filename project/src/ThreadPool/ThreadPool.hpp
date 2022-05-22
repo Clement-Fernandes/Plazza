@@ -19,7 +19,7 @@
 
 class ThreadPool {
     public:
-        ThreadPool(std::shared_ptr<Log> log, std::size_t nbThread, float cookingTime, std::shared_ptr<Fridge> fridge);
+        ThreadPool(std::shared_ptr<Log> log, std::size_t kitchenId, std::size_t nbThread, float cookingTime, std::shared_ptr<Fridge> fridge);
         ~ThreadPool();
 
         void stop();
@@ -31,9 +31,10 @@ class ThreadPool {
 
     protected:
     private:
-        void threadLoop(float cookingTime);
+        void threadLoop(float cookingTime, std::size_t id);
 
         std::shared_ptr<Log> _log;
+        std::size_t _kitchenId;
         std::size_t _nbThread;
 
         std::shared_ptr<Fridge> _fridge;

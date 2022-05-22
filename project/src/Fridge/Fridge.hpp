@@ -14,11 +14,11 @@
     #include <map>
     #include "enum.hpp"
     #include "Clock.hpp"
-
+    #include "Log.hpp"
 
 class Fridge {
     public:
-        Fridge(int ingredientTime);
+        Fridge(int ingredientTime, std::shared_ptr<Log> log, std::size_t id);
         ~Fridge();
 
         bool getIngredients(std::vector<Ingredients> const &ingredientsList);
@@ -31,7 +31,10 @@ class Fridge {
     protected:
     private:
         bool hasIngredients(std::vector<Ingredients> const &ingredientsList);
+
         int _ingredientTime;
+        std::shared_ptr<Log> _log;
+        std::size_t _id;
         std::map<Ingredients, std::size_t> _allIngredients;
         Clock _clock;
 };
