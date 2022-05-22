@@ -26,10 +26,12 @@ class ThreadPool {
 
         void notify();
         void queueJob(Order const &order);
+        std::size_t getInactiveCook() const;
+        std::size_t getQueueSize() const;
 
     protected:
     private:
-        void threadLoop(float cookingTime, std::shared_ptr<Fridge> fridge);
+        void threadLoop(float cookingTime);
 
         std::shared_ptr<Log> _log;
         std::size_t _nbThread;

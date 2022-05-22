@@ -8,7 +8,7 @@
 #ifndef KITCHEN_HPP_
     #define KITCHEN_HPP_
 
-    // #include <thread>
+    #include <thread>
     #include <memory>
     #include <queue>
     #include "Order.hpp"
@@ -24,8 +24,8 @@ class Kitchen {
         ~Kitchen();
 
         std::size_t loop();
-        void displayStatus(void);
-        // void refillIngredients(std::shared_ptr<Fridge> fridge);
+        void refillIngredients();
+        void displayStatus();
 
     protected:
     private:
@@ -48,22 +48,12 @@ class Kitchen {
         /* Clock */
         Clock _clock;
 
-        /* Contain the list of order in the kitchen */
-        std::queue<Order> _orderList;
-
         /* Fridge */
         std::shared_ptr<Fridge> _fridge;
-        // std::thread _fridgeThread;
-        // std::mutex _mutexFridge;
+        std::thread _fridgeThread;
 
         /* ThreadPool containing all cooks */
         ThreadPool _threadPool;
-
-        // /* Contain the list of queues of order List of each cook */
-        // std::vector<std::queue<Order>> _orderCookList;
-
-
-
 };
 
 #endif /* !KITCHEN_HPP_ */

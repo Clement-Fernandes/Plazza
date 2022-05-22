@@ -24,6 +24,7 @@ _allIngredients ({
         {Ingredients::CHIEFLOVE, MAX_SIZE}
     })
 {
+    _clock.start();
 }
 
 Fridge::~Fridge()
@@ -53,44 +54,23 @@ bool Fridge::hasIngredients(std::vector<Ingredients> const &ingredientsList)
     return true;
 }
 
-// bool Fridge::checkRefill(long long int first, long long int second)
-// {
-//     if (second - first > _ingredientTime)
-//         return (true);
-//     return (false);
-// }
+void Fridge::refillIngredients()
+{
+    long long int time = _clock.getElapsedTime();
 
-// bool Fridge::refillIngredients()
-// {
-//     long long int time = _clock.getElapsedTime();
-//     bool reffiled = false;
-
-//     if (time > _ingredientTime) {
-//         for (auto i: _allIngredients) {
-//             std::unique_lock<std::mutex> lock(mutex);
-//             {
-//                 if (i.second < MAX_SIZE) {
-//                     _allIngredients.at(i.first) += 1;
-//                     reffiled = true;
-//                 }
-//             }
-//         }
-//         _clock.restart();
-//     }
-//     if (reffiled)
-//         condition.notify_all();
-//     return reffiled;
-// }
-
-// void Fridge::printDebug() const
-// {
-//     int n = 0;
-
-//     for (auto i : _allIngredients) {
-//         std::cout << n << ": " << i.second << std::endl;
-//         n += 1;
-//     }
-// }
+    if (time > _ingredientTime) {
+        std::cout << "Refill ingredient" << std::endl;
+        std::unique_lock<std::mutex> lock(mutex);
+            {
+            for (auto i: _allIngredients) {
+                if (i.second < MAX_SIZE)
+                    _allIngredients.at(i.first) += 1;
+            }
+        }
+        _clock.restart();
+        condition.notify_all();
+    }
+}
 
 void Fridge::printStatus() const
 {

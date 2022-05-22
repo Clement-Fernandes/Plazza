@@ -9,11 +9,12 @@
     #define FRIDGE_HPP_
 
     #include <vector>
+    #include <mutex>
+    #include <condition_variable>
     #include <map>
     #include "enum.hpp"
+    #include "Clock.hpp"
 
-    #include <condition_variable>
-    #include <mutex>
 
 class Fridge {
     public:
@@ -21,6 +22,7 @@ class Fridge {
         ~Fridge();
 
         bool getIngredients(std::vector<Ingredients> const &ingredientsList);
+        void refillIngredients();
         void printStatus() const;
 
         std::condition_variable condition;
@@ -31,6 +33,7 @@ class Fridge {
         bool hasIngredients(std::vector<Ingredients> const &ingredientsList);
         int _ingredientTime;
         std::map<Ingredients, std::size_t> _allIngredients;
+        Clock _clock;
 };
 
 #endif /* !FRIDGE_HPP_ */

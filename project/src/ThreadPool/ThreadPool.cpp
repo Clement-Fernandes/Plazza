@@ -16,7 +16,7 @@ ThreadPool::ThreadPool(std::shared_ptr<Log> log, std::size_t nbThread, float coo
 {
     _threadsList.resize(_nbThread);
     for (std::size_t i = 0; i < _nbThread; i++)
-        _threadsList.at(i) = std::thread(&ThreadPool::threadLoop, this, cookingTime, _fridge);
+        _threadsList.at(i) = std::thread(&ThreadPool::threadLoop, this, cookingTime);
 }
 
 ThreadPool::~ThreadPool()
@@ -32,9 +32,9 @@ void ThreadPool::stop()
 
 }
 
-void ThreadPool::threadLoop(float cookingTime, std::shared_ptr<Fridge> fridge)
+void ThreadPool::threadLoop(float cookingTime)
 {
-    Cook cook(cookingTime, fridge);
+    Cook cook(cookingTime, _fridge);
 
     while (!_stop) {
         Order order;
@@ -51,15 +51,15 @@ void ThreadPool::threadLoop(float cookingTime, std::shared_ptr<Fridge> fridge)
         _ingredientList = cook.getPizzaIngredients(order);
         if (!_fridge->getIngredients(_ingredientList)) {
             {
-            std::unique_lock<std::mutex> lock(fridge->mutex);
+                std::unique_lock<std::mutex> lock(_fridge->mutex);
 
-            _fridge->condition.wait(lock, [this] {
-                return _fridge->getIngredients(_ingredientList);
-            });
+                _fridge->condition.wait(lock, [this] {
+                    return _fridge->getIngredients(_ingredientList);
+                });
             }
         }
         std::chrono::milliseconds bakingTime(cook.getCookingTime(order));
-        std::this_thread::sleep_for(bakingTime);
+        std::this_thread::sleep_for(bakingTime * cookingTime);
         {
             std::unique_lock<std::mutex> lock(_mutexQueue);
             _inactiveCook += 1;
@@ -82,4 +82,14 @@ void ThreadPool::queueJob(Order const &order)
     }
     if (_inactiveCook > 0)
         _mutexCondition.notify_one();
+}
+
+std::size_t ThreadPool::getInactiveCook() const
+{
+    return _inactiveCook;
+}
+
+std::size_t ThreadPool::getQueueSize() const
+{
+    return _order.size();
 }
