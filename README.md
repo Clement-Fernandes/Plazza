@@ -1,24 +1,43 @@
 [![CI Epitech Project - Octopus](https://github.com/MyEpitech/B-CCP-400-PAR-4-1-theplazza-clement.fernandes/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/MyEpitech/B-CCP-400-PAR-4-1-theplazza-clement.fernandes/actions/workflows/main.yml)
 
-# B-CCP-400-PAR-4-1-theplazza-clement.fernandes
+# Plazza :pizza:
 
-```
-Usage
-    ./plazza <speed> <nbCooks> <iTime>
-    ./plazza --size
-    ./plazza --type
+## About the project
+
+The purpose of this project is to make a **simulation of a pizzeria**, which is composed of the reception that accepts new commands, of several kitchens, themselves with several cooks, themselves cooking several pizzas at the same time.
+
+---
+
+## Getting Started
+
+You just have to clone the repository and follow the instructions below.
+
+### Prerequisites
+
+Clone the repositorie
+
+```bash
+git clone https://github.com/Clement-Fernandes/Plazza.git
 ```
 
-```
-Description
-    speed   multiplier to speed up cooks
-    nbCooks number of cooks in a kitchen
-    iTime   time for ingredriant comming bakc in kitchen
-    --size  print all available pizza sizes
-    --type  print all available pizza types
+#### Execute the project
+
+```bash
+$ cd Plazza
+$ make
+$ ./plazza 2 5 2000
 ```
 
-## Made by
-<a href="https://github.com/Clement-Fernandes" target="_blank"><img src=".assets/clement-profile.png" width="40"></a>
-<a href="https://github.com/psYshiX-07" target="_blank"><img src=".assets/maxime-profile.png" width="40"></a>
-<a href="https://github.com/Darkuore" target="_blank"><img src=".assets/gurvan-profile.png" width="40"></a>
+#### How to order a pizza ?
+
+While the plazza is running you can order a pizza thanks to the textbox at the top of the window.
+
+The order format is `[PIZZA NAME] [SIZE] x[QUANTITY]`, for example : `americana L x17`
+
+You can do multiple order at the same time with `;` : `americana XXL x15 ; fantasia L x10` In multiple order, if there is an invalid pizza in the line, it will be ignored.
+
+When your order is sent, each oppened window shows you a kitchen. You can directly see the progression of the pizza baking !
+
+If a kitchen doesn't receive an order, it will close after **5 seconds**.
+
+**Thank you for your interest in this project.** :smile:
