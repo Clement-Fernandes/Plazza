@@ -2,6 +2,8 @@
 
 # Plazza :pizza:
 
+## $\color{green}{Grade: B}$
+
 ## About the project
 
 The purpose of this project is to make a **simulation of a pizzeria**, which is composed of the reception that accepts new commands, of several kitchens, themselves with several cooks, themselves cooking several pizzas at the same time.
