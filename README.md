@@ -43,3 +43,9 @@ When your order is sent, each oppened window shows you a kitchen. You can direct
 If a kitchen doesn't receive an order, it will close after **5 seconds**.
 
 **Thank you for your interest in this project.** :smile:
+
+### Project realised by:
+
+- **[@Clément F.](https://github.com/Clement-Fernandes)**
+- **[@Gurvan L.](https://github.com/Gurvan-Le-Letty)**
+- **[@Maxime C.](https://github.com/maxime-carabina)**
